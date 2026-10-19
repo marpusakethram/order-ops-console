@@ -135,9 +135,66 @@
   <main class="main-content">
 
     <!-- ================================================================== -->
-    <!-- PAGE 1: OVERVIEW                                                   -->
+    <!-- PAGE 1: OVERVIEW (WITH WEBSITE HERO & PRODUCT SHOWCASE)            -->
     <!-- ================================================================== -->
     <section id="tab-overview" class="tab-panel active">
+      <!-- Modern SaaS Website Hero Banner -->
+      <div id="website-hero" class="website-hero">
+        <div class="hero-left">
+          <div class="hero-eyebrow">
+            <span class="hero-pill">INDIAN D2C OPERATIONS &amp; CFO PLATFORM</span>
+            <span class="hero-pill hero-pill-mcp">MCP JSON-RPC 2.0 READY</span>
+          </div>
+          <h2 class="hero-headline">
+            Reconcile Orders, Courier AWBs &amp; WhatsApp Complaints. Stop COD &amp; RTO Margin Bleed.
+          </h2>
+          <p class="hero-lead">
+            Built for Indian D2C founders and operations teams. Consolidate multi-line Shopify exports, catch stale courier scans &amp; fake delivery PODs, audit overdue COD remittances in integer paise, and connect AI agents via Model Context Protocol.
+          </p>
+          <div class="hero-cta-row">
+            <button type="button" class="btn btn-primary" data-goto-tab="founder">
+              Open Founder &amp; Cashflow Hub →
+            </button>
+            <button type="button" class="btn btn-secondary" data-goto-tab="mcp">
+              Launch MCP Studio (8 AI Tools) →
+            </button>
+            <button type="button" class="btn btn-secondary" data-goto-tab="import">
+              Upload CSV Exports
+            </button>
+            <button type="button" class="btn btn-sm btn-ghost" onclick="document.getElementById('website-hero').classList.add('hidden')">
+              Dismiss Banner ✕
+            </button>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="hero-pipeline-card">
+            <div class="pipeline-title">How 3-Source Reconciliation &amp; Cashflow Audit Works</div>
+            <div class="pipeline-sources">
+              <div class="pipeline-node">
+                <strong>1. Shopify CSV</strong>
+                <span>Orders, Line Items, COD/Prepaid, INR</span>
+              </div>
+              <div class="pipeline-node">
+                <strong>2. Courier AWB CSV</strong>
+                <span>Delhivery, BlueDart, Ecom, Xpressbees</span>
+              </div>
+              <div class="pipeline-node">
+                <strong>3. WhatsApp CSV</strong>
+                <span>Customer DNR &amp; Delay Complaints</span>
+              </div>
+            </div>
+            <div class="pipeline-arrow">↓ Conservative Hierarchy (ID → AWB → +91 Phone + Evidence) ↓</div>
+            <div class="pipeline-outputs">
+              <button type="button" class="pipeline-out-chip" data-goto-tab="orders">Flagged Orders &amp; Provenance</button>
+              <button type="button" class="pipeline-out-chip" data-goto-tab="founder">COD Remittance &amp; SKU Runway</button>
+              <button type="button" class="pipeline-out-chip" data-goto-tab="match-review">Human Match Review Queue</button>
+              <button type="button" class="pipeline-out-chip" data-goto-tab="mcp">MCP Server (`POST /api/mcp`)</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="section-header">
         <div>
           <h2>Operations Overview</h2>
@@ -1085,6 +1142,57 @@
     </section>
 
   </main>
+
+  <!-- Website Footer -->
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <div class="footer-brand-row">
+          <span class="brand-mark">OO</span>
+          <strong>Order Ops &amp; Founder Console</strong>
+        </div>
+        <p class="footer-desc">
+          Full-stack Indian D2C operations, 3-source CSV reconciliation, COD remittance audit, SKU stockout runway, and Model Context Protocol (MCP) server.
+        </p>
+        <p class="footer-meta">Asia/Kolkata (IST, UTC+05:30) · Integer Paise Accounting · Zero Floating-Point Drift</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Platform Modules</h4>
+        <ul class="footer-links">
+          <li><button type="button" class="footer-link-btn" data-goto-tab="overview">1. Operations Overview</button></li>
+          <li><button type="button" class="footer-link-btn" data-goto-tab="import">2. CSV Import &amp; Validation</button></li>
+          <li><button type="button" class="footer-link-btn" data-goto-tab="orders">3. Reconciled Orders &amp; Provenance</button></li>
+          <li><button type="button" class="footer-link-btn" data-goto-tab="match-review">4. Conservative Match Review</button></li>
+          <li><button type="button" class="footer-link-btn" data-goto-tab="ask">5. Ask Your Orders (NL Query)</button></li>
+          <li><button type="button" class="footer-link-btn" data-goto-tab="founder">6. Founder &amp; Cashflow Hub</button></li>
+          <li><button type="button" class="footer-link-btn" data-goto-tab="mcp">7. MCP Studio (AI Agent Ready)</button></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Sample CSVs &amp; Exports</h4>
+        <ul class="footer-links">
+          <li><a href="/api/samples/shopify_orders_demo.csv" download>⬇ Shopify Orders Sample (.csv)</a></li>
+          <li><a href="/api/samples/courier_tracking_demo.csv" download>⬇ Courier Tracking Sample (.csv)</a></li>
+          <li><a href="/api/samples/whatsapp_complaints_demo.csv" download>⬇ WhatsApp Complaints Sample (.csv)</a></li>
+          <li><a href="/api/orders/export.csv" download>⬇ Export Filtered Orders (.csv)</a></li>
+          <li><a href="/api/founder/cod-export.csv?status_filter=ALL" download>⬇ Export COD Remittance Ledger (.csv)</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>API &amp; MCP Endpoints</h4>
+        <ul class="footer-links">
+          <li><a href="/docs" target="_blank" rel="noopener">OpenAPI / Swagger UI (<code>/docs</code>)</a></li>
+          <li><a href="/api/health" target="_blank" rel="noopener">System Health (<code>/api/health</code>)</a></li>
+          <li><a href="/api/founder/dashboard" target="_blank" rel="noopener">Founder CFO JSON (<code>/api/founder/dashboard</code>)</a></li>
+          <li><a href="/api/mcp/catalog" target="_blank" rel="noopener">MCP Server Catalog (<code>/api/mcp/catalog</code>)</a></li>
+          <li><span class="footer-code">POST /api/mcp (JSON-RPC 2.0)</span></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
 
   <script src="/static/app.js"></script>
 </body>
