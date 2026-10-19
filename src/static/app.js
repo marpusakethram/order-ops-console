@@ -44,8 +44,21 @@
     }, 4200);
   }
 
+  function resolveApiUrl(url) {
+    if (!url || !url.startsWith("/")) return url;
+    const isFile = window.location.protocol === "file:";
+    const isOtherPort =
+      (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost") &&
+      window.location.port &&
+      window.location.port !== "8000";
+    if (isFile || isOtherPort) {
+      return `http://127.0.0.1:8000${url}`;
+    }
+    return url;
+  }
+
   async function apiFetch(url, options = {}) {
-    const response = await fetch(url, options);
+    const response = await fetch(resolveApiUrl(url), options);
     if (!response.ok) {
       let errMsg = `Request failed (${response.status})`;
       try {
