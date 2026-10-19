@@ -1,0 +1,201 @@
+AWB Number,Courier Name,Client Order ID,Shipment Status,Scan Timestamp,Current Hub,Consignee Phone,Consignee Name,Collectable Value,Expected Delivery Date,Delivery Attempts,Status Remarks
+00BLD10001,BlueDart,ORD-01001,Picked Up,12/10/2026 17:30,Bengaluru Origin Hub,09810110001,Aditi Rao,1499.00,16/10/2026 18:00,0,Bagged at origin
+00BLD10001,BlueDart,ORD-01001,Delivered,15/10/2026 14:20,Bengaluru Indiranagar,09810110001,Aditi Rao,1499.00,16/10/2026 18:00,1,Delivered to consignee with OTP
+DLV0098401,Delhivery,#01004,In Transit - Hub,15/10/2026 06:00,Bhiwandi Mega Hub,919810110004,Vikram Malhotra,1299.00,18/10/2026 18:00,0,Arrived at Bhiwandi hub; awaiting linehaul connection
+DLV0098401,Delhivery,#01004,In Transit - Hub,15/10/2026 06:00,Bhiwandi Mega Hub,919810110004,Vikram Malhotra,1299.00,18/10/2026 18:00,0,Arrived at Bhiwandi hub; awaiting linehaul connection
+XPB0077201,XpressBees,01005,Failed Attempt - Customer Unavailable,18/10/2026 15:10,Pune Kothrud Hub,09822033445,Sneha Deshmukh,1899.00,18/10/2026 18:00,1,Consignee not reachable on call
+XPB0077201,XpressBees,01005,Undelivered - Door Locked,19/10/2026 13:45,Pune Kothrud Hub,09822033445,Sneha Deshmukh,1899.00,18/10/2026 18:00,2,2nd NDR: House locked according to rider
+ECM0065101,Ecom Express,ORD-01006,RTO Initiated - Returning to Origin,18/10/2026 19:00,Lucknow Transport Nagar Hub,+919810110006,Rohan Verma,1499.00,16/10/2026 18:00,3,Max 3 delivery attempts exhausted; returning to warehouse
+DLV0080801,Delhivery,ORD-01008,In Transit,18/10/2026 20:15,Shamshabad Sort Facility,9810110008,Siddharth Joshi,2098.00,21/10/2026 18:00,0,Part 1 of 2 in transit
+BLD0055101,BlueDart,#01009,Delivered,16/10/2026 12:30,New Delhi Hauz Khas,9810110009,Nandini Chatterjee,2499.00,18/10/2026 18:00,1,Box 1 of 2 delivered
+DLV0055102,Delhivery,#01009,In Transit,15/10/2026 09:00,Okhla Phase II Hub,9810110009,Nandini Chatterjee,1299.00,18/10/2026 18:00,0,Box 2 of 2 awaiting dispatch from hub
+SFX0010101,Shadowfax,01010,Out for Delivery,19/10/2026 10:00,Bengaluru Koramangala,9810110010,Pranav Hegde,1548.00,21/10/2026 18:00,0,Out with delivery executive
+DLV0010111,Delhivery,01011,In Transit,18/10/2026 16:00,Bhiwandi Mega Hub,9820011223,Kavya Sharma,1499.00,20/10/2026 18:00,0,In transit
+BLD0010121,BlueDart,01012,In Transit,18/10/2026 21:00,Mumbai Santacruz Hub,9820011223,Arjun Sharma,1299.00,21/10/2026 18:00,0,In transit
+DTC0099113,DTDC,,In Transit,18/10/2026 14:00,Pune Chakan Hub,,Rahul Kulkarni,1299.00,20/10/2026 18:00,0,Manual manifest entry missing client order ID and phone
+BLD0088301,BlueDart,ORD-01015,Delivered,18/10/2026 16:40,Bengaluru Whitefield,09845022334,Ananya Menon,2499.00,17/10/2026 18:00,1,Delivered at gate
+XPB0010161,XpressBees,01016,Out for Delivery,19/10/2026 09:30,Hyderabad Madhapur Hub,9810110016,Deepak Nair,1199.00,20/10/2026 18:00,0,Out for delivery with agent
+XPB0010161,XpressBees,01016,Picked Up,17/10/2026 14:00,Origin Warehouse,9810110016,Deepak Nair,1199.00,20/10/2026 18:00,0,Late-synced origin pickup scan
+DLV0099117,Delhivery,#01017,Failed Attempt - Consignee Unavailable,19/10/2026 11:00,Ahmedabad Sanand Hub,+91 98101 10018,Gaurav Patel,1499.00,20/10/2026 18:00,1,"Order ref #01017 entered on label, but consignee phone/name is #01018"
+BLD0010191,BlueDart,01019,In Transit,18/10/2026 10:00,Bengaluru Peenya Hub,9810110019,Divya Shetty,1299.00,19/10/2026 18:00,0,In transit
+ECM0010201,Ecom Express,01020,Delivered,16/10/2026 14:00,New Delhi Saket Hub,9810110020,Tanvi Kapoor,2499.00,17/10/2026 18:00,1,Marked delivered in hub batch update
+ECM0010201,Ecom Express,01020,In Transit - Hub,18/10/2026 11:30,Okhla Phase II Hub,9810110020,Tanvi Kapoor,2499.00,17/10/2026 18:00,1,Parcel re-scanned at Okhla sorting floor after delivery mark
+DTC0010211,DTDC,01021,STAT_CODE_99_OCTROI_VERIFICATION,18/10/2026 18:00,Dewas Naka Hub,9810110021,Harsh Chauhan,799.00,21/10/2026 18:00,0,Custom vendor code not in standard dictionary
+BLD0010221,BlueDart,01022,In Transit,19/10/2026 08:30,Bengaluru Peenya Hub,+971504439981,Nikhil Pillai,2499.00,21/10/2026 18:00,0,Arrived at destination city hub
+ECM00102301,Ecom Express,,Delivered,16/10/2026 15:23,Bhiwandi Mega Hub,9876001023,Pooja Sinha,2499.00,17/10/2026 18:00,1,Delivered to consignee
+XPB00102401,XpressBees,ORD-01024,Delivered,17/10/2026 15:24,Peelamedu Hub,09876001024,Ishita Reddy,1499.00,18/10/2026 18:00,1,Delivered to consignee
+ECM00102501,Ecom Express,,Delivered,13/10/2026 15:25,Peelamedu Hub,+91 9876001025,Rohan Sharma,599.00,14/10/2026 18:00,1,Delivered to consignee
+DLV00102601,Delhivery,ORD-01026,Delivered,14/10/2026 15:26,Sriperumbudur Hub,+91-98760-01026,Meera Agarwal,899.00,15/10/2026 18:00,1,Delivered to consignee
+ECM00102701,Ecom Express,,Delivered,15/10/2026 15:27,Chakan Logistics Park,9876001027,Divya Hegde,2499.00,16/10/2026 18:00,1,Delivered to consignee
+DLV00102801,Delhivery,01028,In Transit,19/10/2026 12:15,Sitapura Industrial Hub,09876001028,Reyansh Kulkarni,799.00,21/10/2026 18:00,0,Moving on schedule
+XPB00102901,XpressBees,01029,In Transit,19/10/2026 13:15,Okhla Phase II Hub,+91 9876001029,Sneha Reddy,899.00,21/10/2026 18:00,0,Moving on schedule
+SFX00103001,Shadowfax,,In Transit,19/10/2026 14:15,Sitapura Industrial Hub,+91-98760-01030,Aditya Bhatia,1499.00,21/10/2026 18:00,0,Moving on schedule
+DTC00103101,DTDC,01031,Out for Delivery,19/10/2026 15:15,Sanand Cross-Dock,9876001031,Riya Chatterjee,599.00,21/10/2026 18:00,0,Moving on schedule
+XPB00103401,XpressBees,01034,In Transit - Hub,14/10/2026 11:00,Bengaluru Peenya Hub,+91-98760-01034,Diya Gupta,799.00,18/10/2026 18:00,0,Bagged at transit facility; no onward scan
+ECM00103501,Ecom Express,01035,Failed Attempt - Customer Unavailable,18/10/2026 17:20,Dewas Naka Hub,9876001035,Aadhya Verma,2499.00,18/10/2026 18:00,2,NDR raised: customer phone switched off / door locked
+DTC00103601,DTDC,01036,RTO Initiated,18/10/2026 16:00,Sriperumbudur Hub,09876001036,Kavya Iyer,1499.00,16/10/2026 18:00,3,Returning to origin warehouse after 3 failed attempts
+XPB00103901,XpressBees,01039,In Transit,18/10/2026 22:00,Sriperumbudur Hub,9876001039,Deepak Iyer,1299.00,20/10/2026 18:00,0,In transit to destination hub
+XPB00104001,XpressBees,ORD-01040,Delivered,13/10/2026 15:40,Chakan Logistics Park,09876001040,Sneha Deshmukh,649.00,14/10/2026 18:00,1,Delivered to consignee
+DTC00104101,DTDC,,Delivered,14/10/2026 15:41,Bengaluru Peenya Hub,+91 9876001041,Vihaan Chatterjee,799.00,15/10/2026 18:00,1,Delivered to consignee
+ECM00104201,Ecom Express,ORD-01042,Delivered,15/10/2026 15:42,Peelamedu Hub,+91-98760-01042,Harsh Menon,899.00,16/10/2026 18:00,1,Delivered to consignee
+DTC00104301,DTDC,,Delivered,16/10/2026 15:43,Sanand Cross-Dock,9876001043,Deepak Rao,2499.00,17/10/2026 18:00,1,Delivered to consignee
+DLV00104401,Delhivery,ORD-01044,Delivered,17/10/2026 15:44,Sriperumbudur Hub,09876001044,Kavya Patel,2499.00,18/10/2026 18:00,1,Delivered to consignee
+XPB00104501,XpressBees,,Delivered,13/10/2026 15:45,Okhla Phase II Hub,+91 9876001045,Vivaan Banerjee,899.00,14/10/2026 18:00,1,Delivered to consignee
+BLD00104601,BlueDart,ORD-01046,Delivered,14/10/2026 15:46,Shamshabad Sort Facility,+91-98760-01046,Neha Reddy,1299.00,15/10/2026 18:00,1,Delivered to consignee
+BLD00104701,BlueDart,,Delivered,15/10/2026 15:47,Aluva Transit Center,9876001047,Sneha Chauhan,1299.00,16/10/2026 18:00,1,Delivered to consignee
+ECM00104801,Ecom Express,01048,In Transit,19/10/2026 08:15,Aluva Transit Center,09876001048,Nikhil Kapoor,1499.00,21/10/2026 18:00,0,Moving on schedule
+XPB00104901,XpressBees,01049,In Transit,19/10/2026 09:15,Okhla Phase II Hub,+91 9876001049,Siddharth Hegde,799.00,21/10/2026 18:00,0,Moving on schedule
+DTC00105001,DTDC,,In Transit,19/10/2026 10:15,Sriperumbudur Hub,+91-98760-01050,Vihaan Sharma,899.00,21/10/2026 18:00,0,Moving on schedule
+DLV00105101,Delhivery,01051,Out for Delivery,19/10/2026 11:15,Transport Nagar Hub,9876001051,Karthik Nair,1499.00,21/10/2026 18:00,0,Moving on schedule
+BLD00105401,BlueDart,01054,In Transit - Hub,14/10/2026 11:00,Okhla Phase II Hub,+91-98760-01054,Harsh Reddy,1199.00,18/10/2026 18:00,0,Bagged at transit facility; no onward scan
+XPB00105501,XpressBees,01055,Failed Attempt - Customer Unavailable,18/10/2026 17:20,Sanand Cross-Dock,9876001055,Tanvi Kulkarni,1299.00,18/10/2026 18:00,1,NDR raised: customer phone switched off / door locked
+DLV00105601,Delhivery,01056,RTO Initiated,18/10/2026 16:00,Transport Nagar Hub,09876001056,Riya Shetty,899.00,16/10/2026 18:00,3,Returning to origin warehouse after 3 failed attempts
+ECM00105901,Ecom Express,01059,In Transit,18/10/2026 22:00,Transport Nagar Hub,9876001059,Aadhya Shetty,1499.00,20/10/2026 18:00,0,In transit to destination hub
+XPB00106001,XpressBees,ORD-01060,Delivered,13/10/2026 15:10,Bhiwandi Mega Hub,09876001060,Deepak Bhatia,899.00,14/10/2026 18:00,1,Delivered to consignee
+ECM00106101,Ecom Express,,Delivered,14/10/2026 15:11,Transport Nagar Hub,+91 9876001061,Aditya Verma,899.00,15/10/2026 18:00,1,Delivered to consignee
+ECM00106201,Ecom Express,ORD-01062,Delivered,15/10/2026 15:12,Chakan Logistics Park,+91-98760-01062,Nikhil Kapoor,649.00,16/10/2026 18:00,1,Delivered to consignee
+DTC00106301,DTDC,,Delivered,16/10/2026 15:13,Transport Nagar Hub,9876001063,Aditya Reddy,649.00,17/10/2026 18:00,1,Delivered to consignee
+BLD00106401,BlueDart,ORD-01064,Delivered,17/10/2026 15:14,Dewas Naka Hub,09876001064,Diya Rao,599.00,18/10/2026 18:00,1,Delivered to consignee
+DTC00106501,DTDC,,Delivered,13/10/2026 15:15,Sanand Cross-Dock,+91 9876001065,Meera Banerjee,599.00,14/10/2026 18:00,1,Delivered to consignee
+ECM00106601,Ecom Express,ORD-01066,Delivered,14/10/2026 15:16,Transport Nagar Hub,+91-98760-01066,Tanvi Chauhan,599.00,15/10/2026 18:00,1,Delivered to consignee
+BLD00106701,BlueDart,,Delivered,15/10/2026 15:17,Bengaluru Peenya Hub,9876001067,Nikhil Deshmukh,799.00,16/10/2026 18:00,1,Delivered to consignee
+SFX00106801,Shadowfax,01068,In Transit,19/10/2026 12:15,Sriperumbudur Hub,09876001068,Karthik Mehta,1499.00,21/10/2026 18:00,0,Moving on schedule
+DTC00106901,DTDC,01069,In Transit,19/10/2026 13:15,Sriperumbudur Hub,+91 9876001069,Riya Kapoor,649.00,21/10/2026 18:00,0,Moving on schedule
+XPB00107001,XpressBees,,In Transit,19/10/2026 14:15,Transport Nagar Hub,+91-98760-01070,Vikram Deshmukh,649.00,21/10/2026 18:00,0,Moving on schedule
+DLV00107101,Delhivery,01071,Out for Delivery,19/10/2026 15:15,Shamshabad Sort Facility,9876001071,Neha Sharma,1499.00,21/10/2026 18:00,0,Moving on schedule
+SFX00107401,Shadowfax,01074,In Transit - Hub,14/10/2026 11:00,Shamshabad Sort Facility,+91-98760-01074,Swati Iyer,2499.00,18/10/2026 18:00,0,Bagged at transit facility; no onward scan
+XPB00107501,XpressBees,01075,Failed Attempt - Customer Unavailable,18/10/2026 17:20,Transport Nagar Hub,9876001075,Harsh Sharma,649.00,18/10/2026 18:00,1,NDR raised: customer phone switched off / door locked
+BLD00107601,BlueDart,01076,RTO Initiated,18/10/2026 16:00,Dewas Naka Hub,09876001076,Aditya Agarwal,599.00,16/10/2026 18:00,3,Returning to origin warehouse after 3 failed attempts
+ECM00107901,Ecom Express,01079,In Transit,18/10/2026 22:00,Peelamedu Hub,9876001079,Sneha Reddy,799.00,20/10/2026 18:00,0,In transit to destination hub
+XPB00108001,XpressBees,ORD-01080,Delivered,13/10/2026 15:30,Shamshabad Sort Facility,09876001080,Karthik Sharma,649.00,14/10/2026 18:00,1,Delivered to consignee
+ECM00108101,Ecom Express,,Delivered,14/10/2026 15:31,Transport Nagar Hub,+91 9876001081,Tanvi Pillai,1299.00,15/10/2026 18:00,1,Delivered to consignee
+DTC00108201,DTDC,ORD-01082,Delivered,15/10/2026 15:32,Bengaluru Peenya Hub,+91-98760-01082,Karthik Pillai,599.00,16/10/2026 18:00,1,Delivered to consignee
+ECM00108301,Ecom Express,,Delivered,16/10/2026 15:33,Okhla Phase II Hub,9876001083,Vihaan Sinha,2499.00,17/10/2026 18:00,1,Delivered to consignee
+BLD00108401,BlueDart,ORD-01084,Delivered,17/10/2026 15:34,Aluva Transit Center,09876001084,Nandini Malhotra,899.00,18/10/2026 18:00,1,Delivered to consignee
+DTC00108501,DTDC,,Delivered,13/10/2026 15:35,Transport Nagar Hub,+91 9876001085,Harsh Chatterjee,1199.00,14/10/2026 18:00,1,Delivered to consignee
+XPB00108601,XpressBees,ORD-01086,Delivered,14/10/2026 15:36,Shamshabad Sort Facility,+91-98760-01086,Pranav Bhatia,649.00,15/10/2026 18:00,1,Delivered to consignee
+XPB00108701,XpressBees,,Delivered,15/10/2026 15:37,Dewas Naka Hub,9876001087,Diya Agarwal,1199.00,16/10/2026 18:00,1,Delivered to consignee
+SFX00108801,Shadowfax,01088,In Transit,19/10/2026 08:15,Bhiwandi Mega Hub,09876001088,Kavya Sinha,2499.00,21/10/2026 18:00,0,Moving on schedule
+DTC00108901,DTDC,01089,In Transit,19/10/2026 09:15,Bengaluru Peenya Hub,+91 9876001089,Reyansh Sharma,899.00,21/10/2026 18:00,0,Moving on schedule
+ECM00109001,Ecom Express,,In Transit,19/10/2026 10:15,Aluva Transit Center,+91-98760-01090,Rohan Malhotra,1499.00,21/10/2026 18:00,0,Moving on schedule
+XPB00109101,XpressBees,01091,Out for Delivery,19/10/2026 11:15,Dewas Naka Hub,9876001091,Diya Sinha,2499.00,21/10/2026 18:00,0,Moving on schedule
+DTC00109401,DTDC,01094,In Transit - Hub,14/10/2026 11:00,Shamshabad Sort Facility,+91-98760-01094,Gaurav Reddy,1299.00,18/10/2026 18:00,0,Bagged at transit facility; no onward scan
+BLD00109501,BlueDart,01095,Failed Attempt - Customer Unavailable,18/10/2026 17:20,Dewas Naka Hub,9876001095,Manish Rao,1299.00,18/10/2026 18:00,2,NDR raised: customer phone switched off / door locked
+DTC00109601,DTDC,01096,RTO Initiated,18/10/2026 16:00,Bengaluru Peenya Hub,09876001096,Riya Chauhan,2499.00,16/10/2026 18:00,3,Returning to origin warehouse after 3 failed attempts
+DTC00109901,DTDC,01099,In Transit,18/10/2026 22:00,Sanand Cross-Dock,9876001099,Aadhya Pillai,1299.00,20/10/2026 18:00,0,In transit to destination hub
+DTC00110001,DTDC,ORD-01100,Delivered,13/10/2026 15:00,Transport Nagar Hub,09876001100,Nandini Bhatia,649.00,14/10/2026 18:00,1,Delivered to consignee
+DLV00110101,Delhivery,,Delivered,14/10/2026 15:01,Sanand Cross-Dock,+91 9876001101,Nandini Bhatia,1499.00,15/10/2026 18:00,1,Delivered to consignee
+BLD00110201,BlueDart,ORD-01102,Delivered,15/10/2026 15:02,Shamshabad Sort Facility,+91-98760-01102,Vihaan Nair,599.00,16/10/2026 18:00,1,Delivered to consignee
+DLV00110301,Delhivery,,Delivered,16/10/2026 15:03,Peelamedu Hub,9876001103,Karthik Sharma,1199.00,17/10/2026 18:00,1,Delivered to consignee
+SFX00110401,Shadowfax,ORD-01104,Delivered,17/10/2026 15:04,Sitapura Industrial Hub,09876001104,Riya Iyer,599.00,18/10/2026 18:00,1,Delivered to consignee
+BLD00110501,BlueDart,,Delivered,13/10/2026 15:05,Peelamedu Hub,+91 9876001105,Reyansh Chatterjee,1299.00,14/10/2026 18:00,1,Delivered to consignee
+DTC00110601,DTDC,ORD-01106,Delivered,14/10/2026 15:06,Sitapura Industrial Hub,+91-98760-01106,Divya Nair,1499.00,15/10/2026 18:00,1,Delivered to consignee
+DTC00110701,DTDC,,Delivered,15/10/2026 15:07,Shamshabad Sort Facility,9876001107,Nandini Deshmukh,649.00,16/10/2026 18:00,1,Delivered to consignee
+XPB00110801,XpressBees,01108,In Transit,19/10/2026 12:15,Aluva Transit Center,09876001108,Nandini Shetty,1299.00,21/10/2026 18:00,0,Moving on schedule
+SFX00110901,Shadowfax,01109,In Transit,19/10/2026 13:15,Okhla Phase II Hub,+91 9876001109,Shruti Kapoor,599.00,21/10/2026 18:00,0,Moving on schedule
+DLV00111001,Delhivery,,In Transit,19/10/2026 14:15,Bengaluru Peenya Hub,+91-98760-01110,Gaurav Deshmukh,599.00,21/10/2026 18:00,0,Moving on schedule
+XPB00111101,XpressBees,01111,Out for Delivery,19/10/2026 15:15,Dewas Naka Hub,9876001111,Manish Agarwal,649.00,21/10/2026 18:00,0,Moving on schedule
+XPB00111401,XpressBees,01114,In Transit - Hub,14/10/2026 11:00,Transport Nagar Hub,+91-98760-01114,Vikram Kapoor,1199.00,18/10/2026 18:00,0,Bagged at transit facility; no onward scan
+BLD00111501,BlueDart,01115,Failed Attempt - Customer Unavailable,18/10/2026 17:20,Shamshabad Sort Facility,9876001115,Karthik Bhatia,1499.00,18/10/2026 18:00,1,NDR raised: customer phone switched off / door locked
+BLD00111601,BlueDart,01116,RTO Initiated,18/10/2026 16:00,Okhla Phase II Hub,09876001116,Nikhil Sinha,799.00,16/10/2026 18:00,3,Returning to origin warehouse after 3 failed attempts
+ECM00111901,Ecom Express,01119,In Transit,18/10/2026 22:00,Dewas Naka Hub,9876001119,Vihaan Mehta,1499.00,20/10/2026 18:00,0,In transit to destination hub
+DLV00112001,Delhivery,ORD-01120,Delivered,13/10/2026 15:20,Chakan Logistics Park,09876001120,Aadhya Chauhan,2499.00,14/10/2026 18:00,1,Delivered to consignee
+XPB00112101,XpressBees,,Delivered,14/10/2026 15:21,Transport Nagar Hub,+91 9876001121,Diya Reddy,1499.00,15/10/2026 18:00,1,Delivered to consignee
+DLV00112201,Delhivery,ORD-01122,Delivered,15/10/2026 15:22,Bhiwandi Mega Hub,+91-98760-01122,Diya Deshmukh,2499.00,16/10/2026 18:00,1,Delivered to consignee
+SFX00112301,Shadowfax,,Delivered,16/10/2026 15:23,Sriperumbudur Hub,9876001123,Divya Hegde,899.00,17/10/2026 18:00,1,Delivered to consignee
+BLD00112401,BlueDart,ORD-01124,Delivered,17/10/2026 15:24,Sitapura Industrial Hub,09876001124,Nikhil Menon,1199.00,18/10/2026 18:00,1,Delivered to consignee
+ECM00112501,Ecom Express,,Delivered,13/10/2026 15:25,Chakan Logistics Park,+91 9876001125,Karthik Iyer,649.00,14/10/2026 18:00,1,Delivered to consignee
+DTC00112601,DTDC,ORD-01126,Delivered,14/10/2026 15:26,Okhla Phase II Hub,+91-98760-01126,Meera Deshmukh,799.00,15/10/2026 18:00,1,Delivered to consignee
+DLV00112701,Delhivery,,Delivered,15/10/2026 15:27,Okhla Phase II Hub,9876001127,Shruti Bhatia,649.00,16/10/2026 18:00,1,Delivered to consignee
+ECM00112801,Ecom Express,01128,In Transit,19/10/2026 08:15,Shamshabad Sort Facility,09876001128,Vikram Nair,649.00,21/10/2026 18:00,0,Moving on schedule
+ECM00112901,Ecom Express,01129,In Transit,19/10/2026 09:15,Shamshabad Sort Facility,+91 9876001129,Diya Rao,1499.00,21/10/2026 18:00,0,Moving on schedule
+DTC00113001,DTDC,,In Transit,19/10/2026 10:15,Dewas Naka Hub,+91-98760-01130,Ishita Hegde,799.00,21/10/2026 18:00,0,Moving on schedule
+XPB00113101,XpressBees,01131,Out for Delivery,19/10/2026 11:15,Chakan Logistics Park,9876001131,Saanvi Banerjee,799.00,21/10/2026 18:00,0,Moving on schedule
+DTC00113401,DTDC,01134,In Transit - Hub,14/10/2026 11:00,Shamshabad Sort Facility,+91-98760-01134,Nandini Hegde,1299.00,18/10/2026 18:00,0,Bagged at transit facility; no onward scan
+DLV00113501,Delhivery,01135,Failed Attempt - Customer Unavailable,18/10/2026 17:20,Transport Nagar Hub,9876001135,Vivaan Chatterjee,899.00,18/10/2026 18:00,1,NDR raised: customer phone switched off / door locked
+BLD00113601,BlueDart,01136,RTO Initiated,18/10/2026 16:00,Aluva Transit Center,09876001136,Neha Joshi,599.00,16/10/2026 18:00,3,Returning to origin warehouse after 3 failed attempts
+DLV00113901,Delhivery,01139,In Transit,18/10/2026 22:00,Shamshabad Sort Facility,9876001139,Karthik Rao,599.00,20/10/2026 18:00,0,In transit to destination hub
+DTC00114001,DTDC,ORD-01140,Delivered,13/10/2026 15:40,Transport Nagar Hub,09876001140,Nikhil Joshi,2499.00,14/10/2026 18:00,1,Delivered to consignee
+SFX00114101,Shadowfax,,Delivered,14/10/2026 15:41,Chakan Logistics Park,+91 9876001141,Sneha Rao,1299.00,15/10/2026 18:00,1,Delivered to consignee
+BLD00114201,BlueDart,ORD-01142,Delivered,15/10/2026 15:42,Dewas Naka Hub,+91-98760-01142,Deepak Hegde,899.00,16/10/2026 18:00,1,Delivered to consignee
+ECM00114301,Ecom Express,,Delivered,16/10/2026 15:43,Bhiwandi Mega Hub,9876001143,Nandini Pillai,1299.00,17/10/2026 18:00,1,Delivered to consignee
+DTC00114401,DTDC,ORD-01144,Delivered,17/10/2026 15:44,Sriperumbudur Hub,09876001144,Vikram Mehta,1299.00,18/10/2026 18:00,1,Delivered to consignee
+SFX00114501,Shadowfax,,Delivered,13/10/2026 15:45,Sanand Cross-Dock,+91 9876001145,Riya Reddy,649.00,14/10/2026 18:00,1,Delivered to consignee
+XPB00114601,XpressBees,ORD-01146,Delivered,14/10/2026 15:46,Shamshabad Sort Facility,+91-98760-01146,Meera Rao,649.00,15/10/2026 18:00,1,Delivered to consignee
+DTC00114701,DTDC,,Delivered,15/10/2026 15:47,Bengaluru Peenya Hub,9876001147,Manish Kulkarni,649.00,16/10/2026 18:00,1,Delivered to consignee
+DTC00114801,DTDC,01148,In Transit,19/10/2026 12:15,Aluva Transit Center,09876001148,Siddharth Gupta,1199.00,21/10/2026 18:00,0,Moving on schedule
+BLD00114901,BlueDart,01149,In Transit,19/10/2026 13:15,Bengaluru Peenya Hub,+91 9876001149,Karthik Gupta,1299.00,21/10/2026 18:00,0,Moving on schedule
+SFX00115001,Shadowfax,,In Transit,19/10/2026 14:15,Sitapura Industrial Hub,+91-98760-01150,Shruti Mehta,649.00,21/10/2026 18:00,0,Moving on schedule
+ECM00115101,Ecom Express,01151,Out for Delivery,19/10/2026 15:15,Sitapura Industrial Hub,9876001151,Vikram Patel,1299.00,21/10/2026 18:00,0,Moving on schedule
+BLD00115401,BlueDart,01154,In Transit - Hub,14/10/2026 11:00,Aluva Transit Center,+91-98760-01154,Karthik Agarwal,649.00,18/10/2026 18:00,0,Bagged at transit facility; no onward scan
+SFX00115501,Shadowfax,01155,Failed Attempt - Customer Unavailable,18/10/2026 17:20,Sanand Cross-Dock,9876001155,Meera Menon,1199.00,18/10/2026 18:00,2,NDR raised: customer phone switched off / door locked
+SFX00115601,Shadowfax,01156,RTO Initiated,18/10/2026 16:00,Shamshabad Sort Facility,09876001156,Aadhya Sharma,1299.00,16/10/2026 18:00,3,Returning to origin warehouse after 3 failed attempts
+SFX00115901,Shadowfax,01159,In Transit,18/10/2026 22:00,Sriperumbudur Hub,9876001159,Ananya Verma,1499.00,20/10/2026 18:00,0,In transit to destination hub
+DTC00116001,DTDC,ORD-01160,Delivered,13/10/2026 15:10,Sitapura Industrial Hub,09876001160,Deepak Kapoor,599.00,14/10/2026 18:00,1,Delivered to consignee
+DTC00116101,DTDC,,Delivered,14/10/2026 15:11,Chakan Logistics Park,+91 9876001161,Vivaan Banerjee,899.00,15/10/2026 18:00,1,Delivered to consignee
+DLV00116201,Delhivery,ORD-01162,Delivered,15/10/2026 15:12,Aluva Transit Center,+91-98760-01162,Karthik Nair,2499.00,16/10/2026 18:00,1,Delivered to consignee
+SFX00116301,Shadowfax,,Delivered,16/10/2026 15:13,Chakan Logistics Park,9876001163,Aditya Mehta,649.00,17/10/2026 18:00,1,Delivered to consignee
+DLV00116401,Delhivery,ORD-01164,Delivered,17/10/2026 15:14,Aluva Transit Center,09876001164,Riya Kapoor,1199.00,18/10/2026 18:00,1,Delivered to consignee
+DLV00116501,Delhivery,,Delivered,13/10/2026 15:15,Bengaluru Peenya Hub,+91 9876001165,Manish Sinha,899.00,14/10/2026 18:00,1,Delivered to consignee
+DLV00116601,Delhivery,ORD-01166,Delivered,14/10/2026 15:16,Dewas Naka Hub,+91-98760-01166,Pooja Gupta,649.00,15/10/2026 18:00,1,Delivered to consignee
+DLV00116701,Delhivery,,Delivered,15/10/2026 15:17,Okhla Phase II Hub,9876001167,Vivaan Malhotra,649.00,16/10/2026 18:00,1,Delivered to consignee
+XPB00116801,XpressBees,01168,In Transit,19/10/2026 08:15,Peelamedu Hub,09876001168,Pooja Hegde,1499.00,21/10/2026 18:00,0,Moving on schedule
+SFX00116901,Shadowfax,01169,In Transit,19/10/2026 09:15,Okhla Phase II Hub,+91 9876001169,Siddharth Sharma,599.00,21/10/2026 18:00,0,Moving on schedule
+XPB00117001,XpressBees,,In Transit,19/10/2026 10:15,Aluva Transit Center,+91-98760-01170,Tanvi Kapoor,2499.00,21/10/2026 18:00,0,Moving on schedule
+ECM00117101,Ecom Express,01171,Out for Delivery,19/10/2026 11:15,Bengaluru Peenya Hub,9876001171,Ananya Joshi,1499.00,21/10/2026 18:00,0,Moving on schedule
+BLD00117401,BlueDart,01174,In Transit - Hub,14/10/2026 11:00,Aluva Transit Center,+91-98760-01174,Aadhya Hegde,1499.00,18/10/2026 18:00,0,Bagged at transit facility; no onward scan
+SFX00117501,Shadowfax,01175,Failed Attempt - Customer Unavailable,18/10/2026 17:20,Bhiwandi Mega Hub,9876001175,Harsh Chatterjee,2499.00,18/10/2026 18:00,1,NDR raised: customer phone switched off / door locked
+DTC00117601,DTDC,01176,RTO Initiated,18/10/2026 16:00,Dewas Naka Hub,09876001176,Deepak Kulkarni,1199.00,16/10/2026 18:00,3,Returning to origin warehouse after 3 failed attempts
+SFX00117901,Shadowfax,01179,In Transit,18/10/2026 22:00,Dewas Naka Hub,9876001179,Ishita Chatterjee,599.00,20/10/2026 18:00,0,In transit to destination hub
+ECM00118001,Ecom Express,ORD-01180,Delivered,13/10/2026 15:30,Transport Nagar Hub,09876001180,Rohan Verma,649.00,14/10/2026 18:00,1,Delivered to consignee
+XPB00118101,XpressBees,,Delivered,14/10/2026 15:31,Peelamedu Hub,+91 9876001181,Siddharth Chauhan,1199.00,15/10/2026 18:00,1,Delivered to consignee
+DTC00118201,DTDC,ORD-01182,Delivered,15/10/2026 15:32,Transport Nagar Hub,+91-98760-01182,Saanvi Gupta,2499.00,16/10/2026 18:00,1,Delivered to consignee
+BLD00118301,BlueDart,,Delivered,16/10/2026 15:33,Aluva Transit Center,9876001183,Saanvi Chauhan,1499.00,17/10/2026 18:00,1,Delivered to consignee
+BLD00118401,BlueDart,ORD-01184,Delivered,17/10/2026 15:34,Sitapura Industrial Hub,09876001184,Ananya Reddy,1199.00,18/10/2026 18:00,1,Delivered to consignee
+SFX00118501,Shadowfax,,Delivered,13/10/2026 15:35,Okhla Phase II Hub,+91 9876001185,Riya Sharma,1299.00,14/10/2026 18:00,1,Delivered to consignee
+XPB00118601,XpressBees,ORD-01186,Delivered,14/10/2026 15:36,Sitapura Industrial Hub,+91-98760-01186,Diya Gupta,899.00,15/10/2026 18:00,1,Delivered to consignee
+ECM00118701,Ecom Express,,Delivered,15/10/2026 15:37,Sanand Cross-Dock,9876001187,Rohan Iyer,1299.00,16/10/2026 18:00,1,Delivered to consignee
+SFX00118801,Shadowfax,01188,In Transit,19/10/2026 12:15,Bengaluru Peenya Hub,09876001188,Reyansh Gupta,649.00,21/10/2026 18:00,0,Moving on schedule
+XPB00118901,XpressBees,01189,In Transit,19/10/2026 13:15,Chakan Logistics Park,+91 9876001189,Divya Verma,1299.00,21/10/2026 18:00,0,Moving on schedule
+DTC00119001,DTDC,,In Transit,19/10/2026 14:15,Dewas Naka Hub,+91-98760-01190,Riya Reddy,799.00,21/10/2026 18:00,0,Moving on schedule
+DTC00119101,DTDC,01191,Out for Delivery,19/10/2026 15:15,Sanand Cross-Dock,9876001191,Sneha Hegde,899.00,21/10/2026 18:00,0,Moving on schedule
+XPB00119401,XpressBees,01194,In Transit - Hub,14/10/2026 11:00,Aluva Transit Center,+91-98760-01194,Aadhya Verma,899.00,18/10/2026 18:00,0,Bagged at transit facility; no onward scan
+SFX00119501,Shadowfax,01195,Failed Attempt - Customer Unavailable,18/10/2026 17:20,Sitapura Industrial Hub,9876001195,Vikram Deshmukh,1299.00,18/10/2026 18:00,1,NDR raised: customer phone switched off / door locked
+SFX00119601,Shadowfax,01196,RTO Initiated,18/10/2026 16:00,Sriperumbudur Hub,09876001196,Diya Patel,799.00,16/10/2026 18:00,3,Returning to origin warehouse after 3 failed attempts
+XPB00119901,XpressBees,01199,In Transit,18/10/2026 22:00,Okhla Phase II Hub,9876001199,Siddharth Malhotra,899.00,20/10/2026 18:00,0,In transit to destination hub
+BLD00120001,BlueDart,ORD-01200,Delivered,13/10/2026 15:00,Bengaluru Peenya Hub,09876001200,Rohan Joshi,649.00,14/10/2026 18:00,1,Delivered to consignee
+XPB00120101,XpressBees,,Delivered,14/10/2026 15:01,Peelamedu Hub,+91 9876001201,Riya Chauhan,1499.00,15/10/2026 18:00,1,Delivered to consignee
+ECM00120201,Ecom Express,ORD-01202,Delivered,15/10/2026 15:02,Sanand Cross-Dock,+91-98760-01202,Manish Rao,1199.00,16/10/2026 18:00,1,Delivered to consignee
+DTC00120301,DTDC,,Delivered,16/10/2026 15:03,Bengaluru Peenya Hub,9876001203,Pooja Gupta,1299.00,17/10/2026 18:00,1,Delivered to consignee
+XPB00120401,XpressBees,ORD-01204,Delivered,17/10/2026 15:04,Peelamedu Hub,09876001204,Deepak Agarwal,599.00,18/10/2026 18:00,1,Delivered to consignee
+DLV00120501,Delhivery,,Delivered,13/10/2026 15:05,Peelamedu Hub,+91 9876001205,Karthik Gupta,2499.00,14/10/2026 18:00,1,Delivered to consignee
+SFX00120601,Shadowfax,ORD-01206,Delivered,14/10/2026 15:06,Okhla Phase II Hub,+91-98760-01206,Aditya Hegde,899.00,15/10/2026 18:00,1,Delivered to consignee
+DTC00120701,DTDC,,Delivered,15/10/2026 15:07,Bhiwandi Mega Hub,9876001207,Meera Patel,2499.00,16/10/2026 18:00,1,Delivered to consignee
+BLD00120801,BlueDart,01208,In Transit,19/10/2026 08:15,Sanand Cross-Dock,09876001208,Reyansh Chauhan,899.00,21/10/2026 18:00,0,Moving on schedule
+SFX00120901,Shadowfax,01209,In Transit,19/10/2026 09:15,Okhla Phase II Hub,+91 9876001209,Ananya Rao,799.00,21/10/2026 18:00,0,Moving on schedule
+ECM00121001,Ecom Express,,In Transit,19/10/2026 10:15,Dewas Naka Hub,+91-98760-01210,Reyansh Agarwal,899.00,21/10/2026 18:00,0,Moving on schedule
+DLV00121101,Delhivery,01211,Out for Delivery,19/10/2026 11:15,Sanand Cross-Dock,9876001211,Deepak Chatterjee,1199.00,21/10/2026 18:00,0,Moving on schedule
+BLD00121401,BlueDart,01214,In Transit - Hub,14/10/2026 11:00,Shamshabad Sort Facility,+91-98760-01214,Pranav Verma,799.00,18/10/2026 18:00,0,Bagged at transit facility; no onward scan
+XPB00121501,XpressBees,01215,Failed Attempt - Customer Unavailable,18/10/2026 17:20,Sanand Cross-Dock,9876001215,Arjun Reddy,899.00,18/10/2026 18:00,2,NDR raised: customer phone switched off / door locked
+BLD00121601,BlueDart,01216,RTO Initiated,18/10/2026 16:00,Sanand Cross-Dock,09876001216,Arjun Kulkarni,899.00,16/10/2026 18:00,3,Returning to origin warehouse after 3 failed attempts
+ECM00121901,Ecom Express,01219,In Transit,18/10/2026 22:00,Bhiwandi Mega Hub,9876001219,Vihaan Deshmukh,1299.00,20/10/2026 18:00,0,In transit to destination hub
+DLV00122001,Delhivery,ORD-01220,Delivered,13/10/2026 15:20,Bhiwandi Mega Hub,09876001220,Saanvi Chauhan,2499.00,14/10/2026 18:00,1,Delivered to consignee
+DTC00122101,DTDC,,Delivered,14/10/2026 15:21,Sanand Cross-Dock,+91 9876001221,Sneha Mehta,799.00,15/10/2026 18:00,1,Delivered to consignee
+DTC00122201,DTDC,ORD-01222,Delivered,15/10/2026 15:22,Transport Nagar Hub,+91-98760-01222,Vikram Bhatia,1299.00,16/10/2026 18:00,1,Delivered to consignee
+SFX00122301,Shadowfax,,Delivered,16/10/2026 15:23,Sanand Cross-Dock,9876001223,Gaurav Mehta,2499.00,17/10/2026 18:00,1,Delivered to consignee
+BLD00122401,BlueDart,ORD-01224,Delivered,17/10/2026 15:24,Bengaluru Peenya Hub,09876001224,Harsh Mehta,1499.00,18/10/2026 18:00,1,Delivered to consignee
+ECM00122501,Ecom Express,,Delivered,13/10/2026 15:25,Dewas Naka Hub,+91 9876001225,Vikram Joshi,1299.00,14/10/2026 18:00,1,Delivered to consignee
+SFX00122601,Shadowfax,ORD-01226,Delivered,14/10/2026 15:26,Aluva Transit Center,+91-98760-01226,Sneha Kapoor,1499.00,15/10/2026 18:00,1,Delivered to consignee
+ECM00122701,Ecom Express,,Delivered,15/10/2026 15:27,Transport Nagar Hub,9876001227,Tanvi Iyer,1499.00,16/10/2026 18:00,1,Delivered to consignee
+XPB00122801,XpressBees,01228,In Transit,19/10/2026 12:15,Sitapura Industrial Hub,09876001228,Aarav Banerjee,1499.00,21/10/2026 18:00,0,Moving on schedule
+SFX00122901,Shadowfax,01229,In Transit,19/10/2026 13:15,Okhla Phase II Hub,+91 9876001229,Vivaan Hegde,599.00,21/10/2026 18:00,0,Moving on schedule
+BLD00123001,BlueDart,,In Transit,19/10/2026 14:15,Chakan Logistics Park,+91-98760-01230,Pranav Deshmukh,1199.00,21/10/2026 18:00,0,Moving on schedule
+DLV00123101,Delhivery,01231,Out for Delivery,19/10/2026 15:15,Sriperumbudur Hub,9876001231,Ananya Reddy,599.00,21/10/2026 18:00,0,Moving on schedule
+ECM00123401,Ecom Express,01234,In Transit - Hub,14/10/2026 11:00,Transport Nagar Hub,+91-98760-01234,Vivaan Bhatia,1299.00,18/10/2026 18:00,0,Bagged at transit facility; no onward scan
+BLD00123501,BlueDart,01235,Failed Attempt - Customer Unavailable,18/10/2026 17:20,Sriperumbudur Hub,9876001235,Reyansh Chauhan,1299.00,18/10/2026 18:00,1,NDR raised: customer phone switched off / door locked
+DTC00123601,DTDC,01236,RTO Initiated,18/10/2026 16:00,Sriperumbudur Hub,09876001236,Deepak Shetty,1499.00,16/10/2026 18:00,3,Returning to origin warehouse after 3 failed attempts
+XPB00123901,XpressBees,01239,In Transit,18/10/2026 22:00,Sanand Cross-Dock,9876001239,Swati Shetty,1199.00,20/10/2026 18:00,0,In transit to destination hub
+DLV00124001,Delhivery,ORD-01240,Delivered,13/10/2026 15:40,Transport Nagar Hub,09876001240,Rohan Kulkarni,799.00,14/10/2026 18:00,1,Delivered to consignee
+DLV9990001,Delhivery,,In Transit,18/10/2026 19:00,Bhiwandi Mega Hub,,,1299.00,21/10/2026 18:00,0,Manual offline waybill; only COD amount 1299 recorded
+BLD9990002,BlueDart,AMZ-404-998877,Out for Delivery,19/10/2026 09:00,Chennai Hub,+91 91111 00999,Suresh Venkat,1599.00,19/10/2026 18:00,0,External marketplace shipment not in Shopify export
+,Delhivery,#01004,In Transit,NOT_A_DATE,Mumbai,,Corrupted Scan Row,,,0,Row exported with blank AWB and invalid timestamp

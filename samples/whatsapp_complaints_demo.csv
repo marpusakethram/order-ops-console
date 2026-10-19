@@ -1,0 +1,24 @@
+Ticket ID,Received At,WhatsApp Number,Sender Name,Order Ref,AWB,Issue Type,Message Body,Ticket Status
+WA-1001,19/10/2026 11:20,+91 98101 10004,Vikram Malhotra,,,Stuck in Transit,"Hi team, my order #01004 has had no tracking update since reaching Bhiwandi hub 4 days ago. When will it be delivered?",Open
+WA-1002,19/10/2026 14:30,9822033445,Sneha Deshmukh,,,Fake Delivery Attempt,"Hello, I got an SMS saying door locked in Pune today, but I was home all afternoon and nobody called me! Please arrange re-delivery.",Open
+WA-1003,19/10/2026 12:15,+91-98200-11223,Sharma Residence,,,Address Change Request,"Hi, we placed two orders from this number for Bandra Mumbai. Can you ask the delivery person to call on arrival?",Open
+WA-1004,19/10/2026 09:45,91 98450 22334,Ananya Menon,ORD-01015,BLD0088301,Pod Dispute / Not Received,"Tracking shows delivered for order ORD-01015 yesterday evening, but I have not received any package at my flat or security gate! Please share POD urgently.",Open
+WA-1005,19/10/2026 15:00,+91 97999 00112,Manish Shetty,,,Delivery Follow-up,"Checking on order #01019 for my sister, can you share when BlueDart will deliver today?",Open
+WA-1054,19/10/2026 13:10,9876001054,Harsh Reddy,#01054,BLD00105401,Delayed Delivery,Order #01054 is stuck at Okhla Phase II Hub for 4 days with BlueDart. Please expedite!,Open
+WA-1057,19/10/2026 10:30,919876001057,Pranav Sharma,,,Dispatch Delay,"Hi, I placed my order on 15 Oct (Pranav Sharma) and still haven't received a tracking link.",Open
+WA-1059,19/10/2026 16:10,+91 (0) 98760 01059,Aadhya Shetty,01059,ECM00105901,Delivery Inquiry,"Hello, my order #01059 is still in transit. I need it before Diwali, please check.",Open
+WA-1094,19/10/2026 13:10,9876001094,Gaurav Reddy,#01094,DTC00109401,Delayed Delivery,Order #01094 is stuck at Shamshabad Sort Facility for 4 days with DTDC. Please expedite!,Open
+WA-1097,19/10/2026 10:30,919876001097,Manish Pillai,,,Dispatch Delay,"Hi, I placed my order on 15 Oct (Manish Pillai) and still haven't received a tracking link.",Open
+WA-1099,19/10/2026 16:10,+91 (0) 98760 01099,Aadhya Pillai,01099,DTC00109901,Delivery Inquiry,"Hello, my order #01099 is still in transit. I need it before Diwali, please check.",Open
+WA-1134,19/10/2026 13:10,9876001134,Nandini Hegde,#01134,DTC00113401,Delayed Delivery,Order #01134 is stuck at Shamshabad Sort Facility for 4 days with DTDC. Please expedite!,Open
+WA-1137,19/10/2026 10:30,919876001137,Siddharth Reddy,,,Dispatch Delay,"Hi, I placed my order on 15 Oct (Siddharth Reddy) and still haven't received a tracking link.",Open
+WA-1139,19/10/2026 16:10,+91 (0) 98760 01139,Karthik Rao,01139,DLV00113901,Delivery Inquiry,"Hello, my order #01139 is still in transit. I need it before Diwali, please check.",Open
+WA-1174,19/10/2026 13:10,9876001174,Aadhya Hegde,#01174,BLD00117401,Delayed Delivery,Order #01174 is stuck at Aluva Transit Center for 4 days with BlueDart. Please expedite!,Open
+WA-1177,19/10/2026 10:30,919876001177,Nandini Kapoor,,,Dispatch Delay,"Hi, I placed my order on 15 Oct (Nandini Kapoor) and still haven't received a tracking link.",Open
+WA-1179,19/10/2026 16:10,+91 (0) 98760 01179,Ishita Chatterjee,01179,SFX00117901,Delivery Inquiry,"Hello, my order #01179 is still in transit. I need it before Diwali, please check.",Open
+WA-1214,19/10/2026 13:10,9876001214,Pranav Verma,#01214,BLD00121401,Delayed Delivery,Order #01214 is stuck at Shamshabad Sort Facility for 4 days with BlueDart. Please expedite!,Open
+WA-1217,19/10/2026 10:30,919876001217,Reyansh Shetty,,,Dispatch Delay,"Hi, I placed my order on 15 Oct (Reyansh Shetty) and still haven't received a tracking link.",Open
+WA-1219,19/10/2026 16:10,+91 (0) 98760 01219,Vihaan Deshmukh,01219,ECM00121901,Delivery Inquiry,"Hello, my order #01219 is still in transit. I need it before Diwali, please check.",Open
+WA-1098,19/10/2026 15:40,+91 90000 88776,Unknown WhatsApp User,,,Unmatched Inquiry,"Hi I paid Rs 1299 via UPI 3 days ago from my husband's phone, when will my brass dabara set arrive?",Open
+WA-1099,19/10/2026 16:25,+91 94440 12345,Meera Iyer,,,Dispatch Delay,"Hello, I ordered the Mulmul Dohar Blanket for ₹2499 to Chennai on 14th Oct. Still not shipped! Messaging from my alternate number.",Open
+WA-ERR-99,19/10/2026 17:00,,,,,Blank Export,,Open

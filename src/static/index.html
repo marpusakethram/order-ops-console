@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Ops Console — D2C Order, Courier &amp; Complaint Reconciliation</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <!-- Top Operational Header -->
+  <header class="app-header">
+    <div class="header-brand">
+      <div class="brand-mark" aria-hidden="true">OO</div>
+      <div>
+        <div class="brand-title-row">
+          <h1 class="brand-title">Order Ops Console</h1>
+          <span id="mode-badge" class="badge badge-neutral">Loading mode…</span>
+        </div>
+        <p class="brand-subtitle">Shopify Orders · Courier Tracking · WhatsApp Complaint Reconciliation (IST)</p>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <div class="ref-time-box" title="Reference timestamp used to evaluate stale tracking and dispatch delays">
+        <span class="ref-time-label">Reference Time (IST):</span>
+        <strong id="header-ref-time">—</strong>
+      </div>
+      <button id="btn-load-demo" type="button" class="btn btn-primary">
+        Load Demo Data
+      </button>
+    </div>
+  </header>
+
+  <!-- Synthetic Demo Data Notice Banner -->
+  <div id="demo-banner" class="demo-banner hidden" role="status">
+    <div class="demo-banner-content">
+      <span class="demo-pill">SYNTHETIC DEMO DATA</span>
+      <span>
+        You are viewing reproducible fictional Indian D2C data (240 unique orders, 6 couriers, WhatsApp complaint logs) anchored to
+        <strong id="banner-ref-time">19 Oct 2026, 06:00 PM IST</strong>. No real customer records are present.
+      </span>
+    </div>
+    <div class="demo-banner-actions">
+      <button id="btn-toggle-walkthrough" type="button" class="btn btn-sm btn-secondary">
+        Demo Walkthrough Guide
+      </button>
+      <button id="btn-clear-data" type="button" class="btn btn-sm btn-ghost">
+        Clear Workspace
+      </button>
+    </div>
+  </div>
+
+  <!-- Collapsible Demo Walkthrough Guide -->
+  <section id="walkthrough-panel" class="walkthrough-panel hidden" aria-label="Demo Walkthrough">
+    <div class="walkthrough-header">
+      <div>
+        <h2>2-Minute Operations Walkthrough</h2>
+        <p>Click any step below to jump directly to that showcase scenario in the console:</p>
+      </div>
+      <button id="btn-close-walkthrough" type="button" class="btn btn-sm btn-ghost">Close</button>
+    </div>
+    <div class="walkthrough-steps">
+      <button type="button" class="walkthrough-step" data-walkthrough="stale-order">
+        <span class="step-num">1</span>
+        <div>
+          <strong>Inspect Stale Shipment &amp; Complaint (#01004)</strong>
+          <span>Delhivery AWB stuck at Bhiwandi Hub for 4.5 days + customer WhatsApp inquiry.</span>
+        </div>
+      </button>
+      <button type="button" class="walkthrough-step" data-walkthrough="dnr-order">
+        <span class="step-num">2</span>
+        <div>
+          <strong>Delivered vs. "Not Received" Dispute (#01015)</strong>
+          <span>BlueDart marked Delivered, but customer reported package not received at gate.</span>
+        </div>
+      </button>
+      <button type="button" class="walkthrough-step" data-walkthrough="multi-shipment">
+        <span class="step-num">3</span>
+        <div>
+          <strong>Split Order with 2 Shipments (#01009)</strong>
+          <span>Box 1 delivered via BlueDart; Box 2 delayed in transit via Delhivery.</span>
+        </div>
+      </button>
+      <button type="button" class="walkthrough-step" data-walkthrough="match-review">
+        <span class="step-num">4</span>
+        <div>
+          <strong>Resolve Ambiguous Matches (Match Review)</strong>
+          <span>Shared household phone (+91 •••••• 1223), shared customer name, and conflicting IDs.</span>
+        </div>
+      </button>
+      <button type="button" class="walkthrough-step" data-walkthrough="ask-stuck">
+        <span class="step-num">5</span>
+        <div>
+          <strong>Ask a Question ("Which orders are stuck?")</strong>
+          <span>See how ambiguous terms are clarified and converted into verified filters.</span>
+        </div>
+      </button>
+    </div>
+  </section>
+
+  <!-- Main Navigation Tabs -->
+  <nav class="main-nav" aria-label="Primary Navigation">
+    <button type="button" class="nav-tab active" data-tab="overview">
+      <span>1. Overview</span>
+    </button>
+    <button type="button" class="nav-tab" data-tab="import">
+      <span>2. Import Data</span>
+    </button>
+    <button type="button" class="nav-tab" data-tab="orders">
+      <span>3. Orders</span>
+      <span id="nav-badge-orders" class="nav-count">0</span>
+    </button>
+    <button type="button" class="nav-tab" data-tab="match-review">
+      <span>4. Match Review</span>
+      <span id="nav-badge-review" class="nav-count nav-count-warn">0</span>
+    </button>
+    <button type="button" class="nav-tab" data-tab="ask">
+      <span>5. Ask Your Orders</span>
+    </button>
+  </nav>
+
+  <!-- Global Notification Toast -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- Main Content Container -->
+  <main class="main-content">
+
+    <!-- ================================================================== -->
+    <!-- PAGE 1: OVERVIEW                                                   -->
+    <!-- ================================================================== -->
+    <section id="tab-overview" class="tab-panel active">
+      <div class="section-header">
+        <div>
+          <h2>Operations Overview</h2>
+          <p class="section-subtitle">
+            Click any card below to open the corresponding filtered list. Last import:
+            <strong id="overview-last-import">No data imported yet</strong>
+          </p>
+        </div>
+        <div class="section-actions">
+          <button id="btn-reconcile-now" type="button" class="btn btn-secondary">
+            Re-run Reconciliation
+          </button>
+          <button id="btn-open-thresholds" type="button" class="btn btn-ghost">
+            Rule Thresholds
+          </button>
+        </div>
+      </div>
+
+      <!-- Empty State when no orders are loaded -->
+      <div id="overview-empty-state" class="empty-state-card hidden">
+        <h3>No Orders Loaded in Workspace Yet</h3>
+        <p>
+          Load the built-in 240-order Indian D2C synthetic dataset for an instant walkthrough,
+          or upload your own Shopify, Courier, and WhatsApp CSV files.
+        </p>
+        <div class="empty-state-actions">
+          <button type="button" class="btn btn-primary" id="btn-empty-load-demo">
+            Load Demo Data (240 Orders)
+          </button>
+          <button type="button" class="btn btn-secondary" data-goto-tab="import">
+            Upload CSV Files
+          </button>
+        </div>
+      </div>
+
+      <!-- Operational Summary Cards Grid (9 Required Cards) -->
+      <div id="overview-cards-grid" class="summary-grid">
+        <button type="button" class="summary-card" data-card-action="all-orders">
+          <span class="card-label">Total Orders</span>
+          <strong id="card-total-orders" class="card-value">0</strong>
+          <span class="card-meta">Consolidated Shopify orders →</span>
+        </button>
+
+        <button type="button" class="summary-card" data-card-action="awaiting-shipment">
+          <span class="card-label">Orders Awaiting Shipment</span>
+          <strong id="card-awaiting-shipment" class="card-value">0</strong>
+          <span class="card-meta">Unfulfilled &amp; not cancelled →</span>
+        </button>
+
+        <button type="button" class="summary-card" data-card-action="in-transit">
+          <span class="card-label">Orders in Transit</span>
+          <strong id="card-in-transit" class="card-value">0</strong>
+          <span class="card-meta">Moving with courier partners →</span>
+        </button>
+
+        <button type="button" class="summary-card card-warn" data-card-action="stale-tracking">
+          <span class="card-label">Orders with Stale Tracking</span>
+          <strong id="card-stale-tracking" class="card-value">0</strong>
+          <span id="card-stale-meta" class="card-meta">No scan for ≥ 3 days (72h) →</span>
+        </button>
+
+        <button type="button" class="summary-card card-danger" data-card-action="failed-attempts">
+          <span class="card-label">Failed Delivery Attempts</span>
+          <strong id="card-failed-attempts" class="card-value">0</strong>
+          <span class="card-meta">Active NDR / Door locked / Unreachable →</span>
+        </button>
+
+        <button type="button" class="summary-card card-danger" data-card-action="rto">
+          <span class="card-label">Orders Returning to Origin</span>
+          <strong id="card-rto" class="card-value">0</strong>
+          <span class="card-meta">RTO Initiated or Returned to Warehouse →</span>
+        </button>
+
+        <button type="button" class="summary-card card-danger" data-card-action="open-complaints">
+          <span class="card-label">Open Customer Complaints</span>
+          <strong id="card-open-complaints" class="card-value">0</strong>
+          <span class="card-meta">Orders with unresolved WhatsApp tickets →</span>
+        </button>
+
+        <button type="button" class="summary-card card-priority" data-card-action="needing-review">
+          <span class="card-label">Orders Needing Attention</span>
+          <strong id="card-needing-review" class="card-value">0</strong>
+          <span id="card-priority-breakdown" class="card-meta">High / Medium / Low priority flags →</span>
+        </button>
+
+        <button type="button" class="summary-card card-review" data-card-action="unmatched-records">
+          <span class="card-label">Unmatched / Ambiguous Source Records</span>
+          <strong id="card-unmatched-records" class="card-value">0</strong>
+          <span id="card-unmatched-meta" class="card-meta">Open Match Review queue →</span>
+        </button>
+      </div>
+
+      <!-- Configurable Thresholds Panel (Collapsible) -->
+      <div id="thresholds-panel" class="card-panel hidden">
+        <div class="panel-header">
+          <div>
+            <h3>Operational Attention Rule Thresholds</h3>
+            <p class="text-muted">Adjust thresholds and re-evaluate all order flags deterministically.</p>
+          </div>
+          <button id="btn-close-thresholds" type="button" class="btn btn-sm btn-ghost">Close</button>
+        </div>
+        <form id="form-thresholds" class="thresholds-form">
+          <div class="form-group">
+            <label for="input-unshipped-hours">Unshipped Order Delay Threshold (Hours)</label>
+            <input id="input-unshipped-hours" type="number" min="6" max="720" value="48" required />
+            <small>Default: 48 hours (2 days). Cancelled orders are never flagged.</small>
+          </div>
+          <div class="form-group">
+            <label for="input-stale-hours">Stale Tracking Threshold in Transit (Hours)</label>
+            <input id="input-stale-hours" type="number" min="12" max="720" value="72" required />
+            <small>Default: 72 hours (3 days). Delivered/RTO/Cancelled shipments are excluded.</small>
+          </div>
+          <div class="form-group">
+            <label for="select-ref-time-mode">Reference Clock Mode</label>
+            <select id="select-ref-time-mode">
+              <option value="demo_fixed">Demo Fixed Reference (19 Oct 2026, 06:00 PM IST)</option>
+              <option value="live_ist">Live Wall Clock (Current Asia/Kolkata Time)</option>
+            </select>
+            <small>Fixed reference time ensures demo flags remain consistent on any date.</small>
+          </div>
+          <div class="form-actions-inline">
+            <button type="submit" class="btn btn-primary">Save &amp; Re-evaluate Flags</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Recent Imports & System Environment Status -->
+      <div class="overview-two-col">
+        <div class="card-panel">
+          <div class="panel-header">
+            <h3>Recent Import Batches</h3>
+            <button type="button" class="btn btn-sm btn-secondary" data-goto-tab="import">
+              + Import CSV
+            </button>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Batch</th>
+                  <th>Source Type</th>
+                  <th>File</th>
+                  <th>Accepted</th>
+                  <th>Rejected / Dup</th>
+                  <th>Imported (IST)</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="overview-batches-tbody">
+                <tr>
+                  <td colspan="7" class="text-center text-muted">No batches imported yet.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card-panel">
+          <div class="panel-header">
+            <h3>Environment &amp; Service Status</h3>
+          </div>
+          <dl class="status-list">
+            <div class="status-item">
+              <dt>Operating Mode</dt>
+              <dd id="status-app-mode">Demo Mode</dd>
+            </div>
+            <div class="status-item">
+              <dt>Database Storage</dt>
+              <dd id="status-db-backend">Local SQLite</dd>
+            </div>
+            <div class="status-item">
+              <dt>Natural-Language Query Engine</dt>
+              <dd id="status-gemini-engine">Deterministic Parser (Ready)</dd>
+            </div>
+            <div class="status-item">
+              <dt>Timezone &amp; Currency</dt>
+              <dd>Asia/Kolkata (IST, UTC+05:30) · Indian Rupee (₹ / Paise integer minor units)</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- PAGE 2: IMPORT DATA                                                -->
+    <!-- ================================================================== -->
+    <section id="tab-import" class="tab-panel">
+      <div class="section-header">
+        <div>
+          <h2>Import &amp; Validate CSV Data</h2>
+          <p class="section-subtitle">
+            Upload Shopify order exports, courier tracking sheets, or exported WhatsApp complaint logs.
+          </p>
+        </div>
+      </div>
+
+      <div class="info-callout">
+        <strong>Note on Data Sources:</strong>
+        WhatsApp customer complaints are imported from CSV log files—this console does
+        <strong>not</strong> connect to a live WhatsApp account, Shopify API, or courier webhook,
+        and never automatically messages customers.
+      </div>
+
+      <!-- Downloadable Sample CSV Files -->
+      <div class="card-panel">
+        <div class="panel-header">
+          <div>
+            <h3>Download Sample CSV Files</h3>
+            <p class="text-muted">Download our synthetic CSV files to inspect their structure or test manual uploads:</p>
+          </div>
+        </div>
+        <div class="sample-links-row">
+          <a href="/api/samples/shopify_orders_demo.csv" class="btn btn-sm btn-secondary" download>
+            ⬇ Shopify Orders Sample (.csv)
+          </a>
+          <a href="/api/samples/courier_tracking_demo.csv" class="btn btn-sm btn-secondary" download>
+            ⬇ Courier Tracking Sample (.csv)
+          </a>
+          <a href="/api/samples/whatsapp_complaints_demo.csv" class="btn btn-sm btn-secondary" download>
+            ⬇ WhatsApp Complaints Sample (.csv)
+          </a>
+          <a href="/api/samples/shopify_orders_ambiguous_dates.csv" class="btn btn-sm btn-ghost" download>
+            ⬇ Ambiguous Dates Test Sample (.csv)
+          </a>
+        </div>
+      </div>
+
+      <!-- Step 1: Select Source & Upload File -->
+      <div class="card-panel">
+        <h3>1. Select Source Type &amp; Upload CSV</h3>
+        <form id="form-import-upload" class="import-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="import-source-type">Source Type</label>
+              <select id="import-source-type" name="source_type" required>
+                <option value="shopify_orders">1. Shopify Orders Export (.csv)</option>
+                <option value="courier_tracking">2. Courier Tracking Spreadsheet (.csv)</option>
+                <option value="whatsapp_complaints">3. WhatsApp Customer Complaints Log (.csv)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="import-date-format">Expected Date Format (for numeric dates like 04/05/2026)</label>
+              <select id="import-date-format" name="date_format_preference">
+                <option value="auto">Auto-detect (Pause &amp; warn if date is ambiguous)</option>
+                <option value="DD/MM/YYYY">DD/MM/YYYY (Indian Standard — Day first)</option>
+                <option value="MM/DD/YYYY">MM/DD/YYYY (US Spreadsheet — Month first)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="import-file-input">CSV File (UTF-8 / Excel CSV)</label>
+              <input id="import-file-input" type="file" accept=".csv,text/csv" required />
+            </div>
+          </div>
+
+          <div class="form-actions-inline">
+            <button id="btn-preview-csv" type="submit" class="btn btn-primary">
+              Preview &amp; Validate CSV
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Step 2: Preview, Column Mapping & Validation Results -->
+      <div id="import-preview-container" class="card-panel hidden">
+        <div class="panel-header">
+          <div>
+            <h3>2. Review Column Mappings &amp; Validation</h3>
+            <p id="preview-file-meta" class="text-muted"></p>
+          </div>
+          <div class="section-actions">
+            <button id="btn-download-preview-errors" type="button" class="btn btn-sm btn-secondary hidden">
+              ⬇ Download Error Report (.csv)
+            </button>
+            <button id="btn-commit-import" type="button" class="btn btn-primary">
+              Complete Import &amp; Reconcile
+            </button>
+          </div>
+        </div>
+
+        <!-- Validation Counts Banner -->
+        <div class="validation-stats-row">
+          <div class="val-stat">
+            <span>Total Rows</span>
+            <strong id="val-total">0</strong>
+          </div>
+          <div class="val-stat val-stat-ok">
+            <span>Accepted Rows</span>
+            <strong id="val-accepted">0</strong>
+          </div>
+          <div class="val-stat val-stat-err">
+            <span>Rejected Rows</span>
+            <strong id="val-rejected">0</strong>
+          </div>
+          <div class="val-stat val-stat-dup">
+            <span>Duplicate Rows (Skipped)</span>
+            <strong id="val-duplicate">0</strong>
+          </div>
+        </div>
+
+        <!-- Missing Required Fields Alert -->
+        <div id="preview-missing-alert" class="alert-box alert-danger hidden"></div>
+
+        <!-- Ambiguous Date Alert -->
+        <div id="preview-ambiguous-alert" class="alert-box alert-warn hidden"></div>
+
+        <!-- Column Mapping Controls -->
+        <div class="mapping-section">
+          <h4>Column Mapping (Adjust any column below and click "Re-validate Mapping")</h4>
+          <div id="mapping-grid" class="mapping-grid"></div>
+          <div class="form-actions-inline" style="margin-top: 0.75rem;">
+            <button id="btn-revalidate-mapping" type="button" class="btn btn-sm btn-secondary">
+              Re-validate Mapping
+            </button>
+          </div>
+        </div>
+
+        <!-- Sample Preview Rows -->
+        <div class="preview-tables-split">
+          <div>
+            <h4>CSV Sample Preview (First 5 Rows)</h4>
+            <div class="table-responsive">
+              <table id="preview-sample-table" class="data-table">
+                <thead></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="preview-errors-section" class="hidden">
+            <h4>Rejected &amp; Duplicate Rows</h4>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Original Row #</th>
+                    <th>Status</th>
+                    <th>Explanation</th>
+                  </tr>
+                </thead>
+                <tbody id="preview-errors-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Completed Import Summary -->
+      <div id="import-summary-container" class="card-panel hidden"></div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- PAGE 3: ORDERS                                                     -->
+    <!-- ================================================================== -->
+    <section id="tab-orders" class="tab-panel">
+      <div class="section-header">
+        <div>
+          <h2>Reconciled Orders</h2>
+          <p class="section-subtitle">
+            Search, filter, sort, inspect source provenance, or export filtered orders.
+          </p>
+        </div>
+        <div class="section-actions">
+          <button id="btn-reset-filters" type="button" class="btn btn-ghost">
+            Reset Filters
+          </button>
+          <button id="btn-export-orders" type="button" class="btn btn-secondary">
+            ⬇ Export Filtered CSV
+          </button>
+        </div>
+      </div>
+
+      <!-- Active Special Rule Filter Banner (e.g. from Overview or Ask Your Orders) -->
+      <div id="active-rule-banner" class="active-rule-banner hidden">
+        <span id="active-rule-text"></span>
+        <button id="btn-clear-rule-filter" type="button" class="btn btn-sm btn-ghost">Clear Rule Filter ✕</button>
+      </div>
+
+      <!-- Filters Bar -->
+      <div class="filters-panel card-panel">
+        <div class="filters-grid">
+          <div class="form-group filter-search-group">
+            <label for="filter-search">Search (Order #, AWB, Customer Name)</label>
+            <input id="filter-search" type="search" placeholder="e.g. #01004, DLV0098401, Sneha…" />
+          </div>
+
+          <div class="form-group">
+            <label for="filter-attention">Attention Level</label>
+            <select id="filter-attention">
+              <option value="">All Levels</option>
+              <option value="flagged_any">All Flagged (High / Med / Low)</option>
+              <option value="High">High Priority</option>
+              <option value="Medium">Medium Priority</option>
+              <option value="Low">Low Priority</option>
+              <option value="No current flag">No Current Flag</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="filter-shipment-status">Shipment Status</label>
+            <select id="filter-shipment-status">
+              <option value="">All Statuses</option>
+              <option value="awaiting_shipment">Awaiting Shipment</option>
+              <option value="in_transit">In Transit (Active)</option>
+              <option value="out_for_delivery">Out for Delivery</option>
+              <option value="failed_attempt">Failed Attempt (NDR)</option>
+              <option value="rto">Returning to Origin (RTO)</option>
+              <option value="delivered">Delivered</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="filter-courier">Courier Partner</label>
+            <select id="filter-courier">
+              <option value="">All Couriers</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="filter-payment">Payment Method</label>
+            <select id="filter-payment">
+              <option value="">All (COD &amp; Prepaid)</option>
+              <option value="COD">Cash on Delivery (COD)</option>
+              <option value="Prepaid">Prepaid</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="filter-complaints">Open Complaints</label>
+            <select id="filter-complaints">
+              <option value="">All Orders</option>
+              <option value="true">Has Open Complaint</option>
+              <option value="false">No Open Complaint</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="filter-city">City</label>
+            <select id="filter-city">
+              <option value="">All Cities</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="filter-match-status">Match Status</label>
+            <select id="filter-match-status">
+              <option value="">All Match Statuses</option>
+              <option value="Exact match">Exact match</option>
+              <option value="Strong match">Strong match</option>
+              <option value="Needs review">Needs review</option>
+              <option value="Manually confirmed">Manually confirmed</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="filter-date-from">Order Date From</label>
+            <input id="filter-date-from" type="date" />
+          </div>
+
+          <div class="form-group">
+            <label for="filter-date-to">Order Date To</label>
+            <input id="filter-date-to" type="date" />
+          </div>
+
+          <div class="form-group">
+            <label for="filter-sort">Sort By</label>
+            <select id="filter-sort">
+              <option value="priority">Operational Priority (High → Low)</option>
+              <option value="order_date_desc">Order Date (Newest First)</option>
+              <option value="order_date_asc">Order Date (Oldest First)</option>
+              <option value="amount_desc">Order Value (High → Low)</option>
+              <option value="amount_asc">Order Value (Low → High)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Orders Table -->
+      <div class="card-panel table-panel">
+        <div class="table-toolbar">
+          <span id="orders-Showing-count" class="text-muted">Showing 0 orders</span>
+          <div class="pagination-controls">
+            <button id="btn-prev-page" type="button" class="btn btn-sm btn-secondary" disabled>← Prev</button>
+            <span id="orders-page-indicator" class="page-indicator">Page 1 of 1</span>
+            <button id="btn-next-page" type="button" class="btn btn-sm btn-secondary" disabled>Next →</button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table orders-table">
+            <thead>
+              <tr>
+                <th>Order #</th>
+                <th>Order Date (IST)</th>
+                <th>Customer</th>
+                <th>Masked Phone</th>
+                <th>City</th>
+                <th>Value</th>
+                <th>Payment</th>
+                <th>Fulfillment</th>
+                <th>Courier &amp; AWB</th>
+                <th>Latest Shipment Status</th>
+                <th>Last Scan (IST)</th>
+                <th>Complaints</th>
+                <th>Attention Level &amp; Reason</th>
+                <th>Match Status</th>
+              </tr>
+            </thead>
+            <tbody id="orders-tbody">
+              <tr>
+                <td colspan="14" class="text-center text-muted">Loading orders…</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- PAGE 4: ORDER DETAILS (Opened when clicking an order)              -->
+    <!-- ================================================================== -->
+    <section id="tab-order-details" class="tab-panel">
+      <div class="section-header">
+        <div>
+          <button id="btn-back-to-orders" type="button" class="btn btn-sm btn-secondary" style="margin-bottom: 0.5rem;">
+            ← Back to Orders List
+          </button>
+          <h2 id="detail-order-title">Order Details</h2>
+          <p id="detail-order-subtitle" class="section-subtitle"></p>
+        </div>
+        <div id="detail-header-badges" class="detail-badges"></div>
+      </div>
+
+      <div id="order-details-content" class="details-layout"></div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- PAGE 5: MATCH REVIEW                                               -->
+    <!-- ================================================================== -->
+    <section id="tab-match-review" class="tab-panel">
+      <div class="section-header">
+        <div>
+          <h2>Match Review &amp; Reconciliation Audit</h2>
+          <p class="section-subtitle">
+            Inspect courier scans and WhatsApp complaints that could not be matched automatically with certainty.
+            Raw imported records are never overwritten.
+          </p>
+        </div>
+        <div class="section-actions">
+          <select id="review-status-filter" aria-label="Filter Review Queue by Status">
+            <option value="actionable">Actionable Queue (Needs Review &amp; Unmatched &amp; Manual)</option>
+            <option value="needs_review">Needs Review Only</option>
+            <option value="unmatched">Unmatched Only</option>
+            <option value="manually_confirmed">Manually Confirmed Only</option>
+          </select>
+          <select id="review-source-filter" aria-label="Filter Review Queue by Source">
+            <option value="all">All Sources (Courier &amp; WhatsApp)</option>
+            <option value="courier_tracking">Courier Tracking Only</option>
+            <option value="whatsapp_complaints">WhatsApp Complaints Only</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="review-stats-bar">
+        <div class="review-stat-pill">
+          <span>Needs Review:</span>
+          <strong id="rev-count-needs-review">0</strong>
+        </div>
+        <div class="review-stat-pill">
+          <span>Unmatched:</span>
+          <strong id="rev-count-unmatched">0</strong>
+        </div>
+        <div class="review-stat-pill">
+          <span>Manually Confirmed:</span>
+          <strong id="rev-count-manual">0</strong>
+        </div>
+        <div class="review-stat-pill">
+          <span class="text-muted">Note: Candidate scores (0–100) are heuristic rule weights, not statistical probabilities.</span>
+        </div>
+      </div>
+
+      <div id="match-review-list" class="review-cards-list"></div>
+
+      <!-- Manual Decisions Audit History -->
+      <div class="card-panel" style="margin-top: 1.5rem;">
+        <div class="panel-header">
+          <div>
+            <h3>Manual Match Audit History</h3>
+            <p class="text-muted">Chronological log of all manual confirmations, rejections, and overrides.</p>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Time (IST)</th>
+                <th>Record ID &amp; Source</th>
+                <th>Decision</th>
+                <th>Previous Status</th>
+                <th>New Status</th>
+                <th>Linked Order</th>
+                <th>Reason / Note</th>
+                <th>Operator</th>
+              </tr>
+            </thead>
+            <tbody id="match-audit-tbody">
+              <tr>
+                <td colspan="8" class="text-center text-muted">No manual decisions recorded yet.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- PAGE 6: ASK YOUR ORDERS                                            -->
+    <!-- ================================================================== -->
+    <section id="tab-ask" class="tab-panel">
+      <div class="section-header">
+        <div>
+          <h2>Ask Your Orders</h2>
+          <p class="section-subtitle">
+            Ask plain-English operational questions. Questions are translated into a strict, validated filter structure—never raw SQL.
+          </p>
+        </div>
+      </div>
+
+      <div class="card-panel">
+        <form id="form-ask-question" class="ask-form">
+          <label for="input-ask-question" class="sr-only">Ask a question about your orders</label>
+          <div class="ask-input-row">
+            <input
+              id="input-ask-question"
+              type="text"
+              placeholder="e.g. Which COD orders had a failed delivery attempt?"
+              required
+            />
+            <button type="submit" class="btn btn-primary">Ask Question</button>
+          </div>
+        </form>
+
+        <div class="example-questions-block">
+          <span class="example-label">Example Operational Questions:</span>
+          <div class="example-chips">
+            <button type="button" class="chip-btn" data-question="Which orders are stuck?">
+              Which orders are stuck?
+            </button>
+            <button type="button" class="chip-btn" data-question="Show shipments with no update for three days.">
+              Show shipments with no update for three days.
+            </button>
+            <button type="button" class="chip-btn" data-question="Which COD orders had a failed delivery attempt?">
+              Which COD orders had a failed delivery attempt?
+            </button>
+            <button type="button" class="chip-btn" data-question="Which customers complained but their orders are still in transit?">
+              Which customers complained but their orders are still in transit?
+            </button>
+            <button type="button" class="chip-btn" data-question="Show orders returning to origin.">
+              Show orders returning to origin.
+            </button>
+            <button type="button" class="chip-btn" data-question="Which records still need a match?">
+              Which records still need a match?
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="ask-response-container" class="hidden"></div>
+    </section>
+
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

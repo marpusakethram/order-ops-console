@@ -1,0 +1,3 @@
+Name,Created at,Customer Name,Customer Phone,Email,Shipping City,Shipping Province,Shipping Zip,Total,Payment Method,Financial Status,Fulfillment Status,Cancelled at,Lineitem SKU,Lineitem name,Lineitem quantity,Lineitem price,Tracking Number,Tracking Company,Promised Delivery Date
+#09001,04/05/2026 10:30,Riya Kapoor,+91 98111 22334,riya@example.in,New Delhi,Delhi,110016,"₹1,499.00",Prepaid,paid,unfulfilled,,SKU-KUR-01,Indigo Handblock Cotton Kurta,1,1499.00,,,08/05/2026 18:00
+#09002,06/07/2026 14:15,Vihaan Joshi,+91 98111 22335,vihaan@example.in,Mumbai,Maharashtra,400050,₹899.00,COD,pending,unfulfilled,,SKU-SRM-02,Kumkumadi Glow Facial Serum 30ml,1,899.00,,,10/07/2026 18:00
