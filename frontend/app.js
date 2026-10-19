@@ -126,6 +126,10 @@
       loadOrders();
     } else if (tabName === "match-review") {
       loadMatchReview();
+    } else if (tabName === "founder") {
+      loadFounderDashboard();
+    } else if (tabName === "mcp") {
+      loadMcpStudio();
     }
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -1723,8 +1727,480 @@
         } catch (err) {
           showToast(`Delete failed: ${err.message}`, "error");
         }
+        return;
+      }
+
+      const playbookBtn = e.target.closest("[data-playbook-action]");
+      if (playbookBtn) {
+        handleFounderPlaybookAction(playbookBtn.getAttribute("data-playbook-action"));
+        return;
+      }
+
+      const mcpCatalogItem = e.target.closest("[data-mcp-select-kind]");
+      if (mcpCatalogItem) {
+        const kind = mcpCatalogItem.getAttribute("data-mcp-select-kind");
+        const name = mcpCatalogItem.getAttribute("data-mcp-select-name");
+        const kindSel = document.getElementById("mcp-kind-select");
+        if (kindSel) {
+          kindSel.value = kind;
+          populateMcpTargetSelect(kind, name);
+          executeMcpPlayground();
+        }
+        return;
       }
     });
+
+    // Founder & Cashflow Hub listeners
+    const btnRefreshFounder = document.getElementById("btn-refresh-founder");
+    if (btnRefreshFounder) {
+      btnRefreshFounder.addEventListener("click", () => {
+        loadFounderDashboard();
+        showToast("Refreshed Founder P&L, COD Remittance Ledger, and SKU Runway.", "success");
+      });
+    }
+
+    const codStatusFilter = document.getElementById("founder-cod-status-filter");
+    if (codStatusFilter) {
+      codStatusFilter.addEventListener("change", () => {
+        renderFounderCodLedger();
+        const exportLink = document.getElementById("btn-export-cod-csv");
+        if (exportLink) {
+          exportLink.href = resolveApiUrl(
+            `/api/founder/cod-export.csv?status_filter=${encodeURIComponent(codStatusFilter.value)}`
+          );
+        }
+      });
+    }
+
+    // MCP Studio listeners
+    const mcpKindSelect = document.getElementById("mcp-kind-select");
+    if (mcpKindSelect) {
+      mcpKindSelect.addEventListener("change", () => {
+        populateMcpTargetSelect(mcpKindSelect.value);
+      });
+    }
+
+    const mcpTargetSelect = document.getElementById("mcp-target-select");
+    if (mcpTargetSelect) {
+      mcpTargetSelect.addEventListener("change", () => {
+        updateMcpTargetDetails();
+      });
+    }
+
+    const btnRunMcp = document.getElementById("btn-run-mcp");
+    if (btnRunMcp) {
+      btnRunMcp.addEventListener("click", executeMcpPlayground);
+    }
+
+    const btnResetMcpArgs = document.getElementById("btn-reset-mcp-args");
+    if (btnResetMcpArgs) {
+      btnResetMcpArgs.addEventListener("click", () => {
+        updateMcpTargetDetails();
+        showToast("Reset MCP JSON arguments to sample defaults.", "info");
+      });
+    }
+
+    const btnCopyMcpConfig = document.getElementById("btn-copy-mcp-config");
+    if (btnCopyMcpConfig) {
+      btnCopyMcpConfig.addEventListener("click", async () => {
+        const pre = document.getElementById("mcp-client-config-pre");
+        if (pre && navigator.clipboard) {
+          await navigator.clipboard.writeText(pre.textContent);
+          showToast("Copied MCP client configuration JSON to clipboard.", "success");
+        }
+      });
+    }
+  }
+
+  /* ========================================================================
+     PAGE 6: Founder & Cashflow Command Center
+     ======================================================================== */
+  async function loadFounderDashboard() {
+    try {
+      const data = await apiFetch("/api/founder/dashboard");
+      state.founderDashboard = data;
+      const ue = data.unit_economics;
+
+      // Top KPI Cards
+      document.getElementById("fkpi-active-gmv").textContent = ue.active_gmv_display;
+      document.getElementById("fkpi-gross-sub").textContent = `Gross: ${ue.gross_gmv_display} · Cancelled: ${ue.cancelled_gmv_display}`;
+      document.getElementById("fkpi-net-margin").textContent = `${ue.net_contribution_display} (${ue.net_contribution_pct}%)`;
+      document.getElementById("fkpi-net-margin-pct").textContent = `Realized Rev: ${ue.realized_revenue_display} · COGS: ${ue.total_cogs_display}`;
+      document.getElementById("fkpi-bank-cash").textContent = ue.cash_collected_bank_display;
+      document.getElementById("fkpi-bank-sub").textContent = `Prepaid: ${ue.prepaid_realized_display} · Settled COD: ${ue.cod_settled_display}`;
+      document.getElementById("fkpi-cod-overdue").textContent = ue.cod_overdue_display;
+      document.getElementById("fkpi-cod-overdue-sub").textContent = `${ue.overdue_cod_count} delivered COD orders past courier SLA`;
+      document.getElementById("fkpi-cod-disputed").textContent = ue.cod_shortfall_discrepancy_display;
+      document.getElementById("fkpi-cod-disputed-sub").textContent = `${ue.disputed_cod_count} short-remitted orders (₹95 weight dispute)`;
+      document.getElementById("fkpi-rto-bleed").textContent = ue.rto_margin_bleed_display;
+      document.getElementById("fkpi-rto-sub").textContent = `RTO Order Value: ${ue.rto_order_value_display}`;
+
+      const navBadgeFounder = document.getElementById("nav-badge-founder");
+      if (navBadgeFounder) {
+        navBadgeFounder.textContent = `${ue.overdue_cod_count} Overdue`;
+      }
+
+      // Playbooks
+      const playbooksEl = document.getElementById("founder-playbooks-grid");
+      playbooksEl.innerHTML = (data.founder_playbooks || [])
+        .map(
+          (pb, idx) => `
+          <div class="playbook-card ${idx === 0 ? "playbook-p0" : ""}">
+            <div>
+              <div class="playbook-top">
+                <span class="playbook-priority">${escapeHtml(pb.priority)}</span>
+                <span class="playbook-impact">${escapeHtml(pb.impact_display)}</span>
+              </div>
+              <h4 class="playbook-title">${escapeHtml(pb.title)}</h4>
+              <p class="playbook-detail">${escapeHtml(pb.detail)}</p>
+            </div>
+            <div>
+              <button type="button" class="btn btn-sm btn-primary" data-playbook-action="${escapeHtml(pb.target_action)}">
+                ${escapeHtml(pb.action_label)} →
+              </button>
+            </div>
+          </div>
+        `
+        )
+        .join("");
+
+      // Unit Economics Waterfall
+      const wfEl = document.getElementById("founder-waterfall-bar");
+      wfEl.innerHTML = `
+        <div class="waterfall-step wf-positive">
+          <span class="waterfall-label">1. Active GMV</span>
+          <strong class="waterfall-val">${escapeHtml(ue.active_gmv_display)}</strong>
+          <span class="waterfall-sub">Excludes ${escapeHtml(ue.cancelled_gmv_display)} cancelled</span>
+        </div>
+        <div class="waterfall-step wf-deduct">
+          <span class="waterfall-label">2. Less: RTO Uncollected</span>
+          <strong class="waterfall-val">-${escapeHtml(ue.rto_order_value_display)}</strong>
+          <span class="waterfall-sub">Returned to warehouse</span>
+        </div>
+        <div class="waterfall-step wf-positive">
+          <span class="waterfall-label">3. Realized Revenue</span>
+          <strong class="waterfall-val">${escapeHtml(ue.realized_revenue_display)}</strong>
+          <span class="waterfall-sub">Delivered + active pipeline</span>
+        </div>
+        <div class="waterfall-step wf-deduct">
+          <span class="waterfall-label">4. Less: Product COGS</span>
+          <strong class="waterfall-val">-${escapeHtml(ue.total_cogs_display)}</strong>
+          <span class="waterfall-sub">21%–26% landed manufacturing</span>
+        </div>
+        <div class="waterfall-step wf-deduct">
+          <span class="waterfall-label">5. Less: Freight, RTO &amp; COD Fees</span>
+          <strong class="waterfall-val">-${escapeHtml(ue.total_logistics_cost_display)}</strong>
+          <span class="waterfall-sub">Fwd: ${escapeHtml(ue.forward_freight_display)} · RTO: ${escapeHtml(ue.rto_freight_penalty_display)}</span>
+        </div>
+        <div class="waterfall-step wf-net">
+          <span class="waterfall-label">6. Net Contribution</span>
+          <strong class="waterfall-val">${escapeHtml(ue.net_contribution_display)} (${ue.net_contribution_pct}%)</strong>
+          <span class="waterfall-sub">Pre-marketing operating profit</span>
+        </div>
+      `;
+
+      // COD Remittance Table
+      renderFounderCodLedger();
+
+      // SKU Velocity & Stockout Runway Table
+      const skuTbody = document.getElementById("founder-sku-tbody");
+      skuTbody.innerHTML = (data.sku_inventory_runway || [])
+        .map((s) => {
+          let badgeClass = "badge-ok";
+          if (s.stock_status === "CRITICAL_STOCKOUT_RISK") badgeClass = "badge-high";
+          else if (s.stock_status === "REORDER_NOW") badgeClass = "badge-medium";
+          else if (s.stock_status === "OVERSTOCKED_CAPITAL") badgeClass = "badge-neutral";
+
+          return `
+            <tr>
+              <td>
+                <strong>${escapeHtml(s.title)}</strong>
+                <div class="text-muted" style="font-size:0.75rem;font-family:monospace;">${escapeHtml(s.sku)} · Rev: ${escapeHtml(s.gross_revenue_display)}</div>
+              </td>
+              <td>
+                <strong>${s.units_ordered}</strong> ord · ${s.units_delivered} deliv · <span style="color:#dc2626;">${s.units_rto} RTO (${s.rto_rate_pct}%)</span>
+              </td>
+              <td>${s.daily_velocity}/day</td>
+              <td><strong>${s.warehouse_stock}</strong> units</td>
+              <td><span class="badge ${badgeClass}">${escapeHtml(s.stock_badge)}</span></td>
+              <td>
+                ${
+                  s.recommended_po_units > 0
+                    ? `<strong>Order ${s.recommended_po_units} units</strong> <div class="text-muted" style="font-size:0.74rem;">Lead time: ${s.lead_time_days}d</div>`
+                    : `<span class="text-muted">No PO needed</span>`
+                }
+              </td>
+            </tr>
+          `;
+        })
+        .join("");
+
+      // Courier SLA Scorecard Table
+      const courierTbody = document.getElementById("founder-courier-tbody");
+      courierTbody.innerHTML = (data.courier_scorecard || [])
+        .map((c) => {
+          let gradeBadge = "badge-ok";
+          if (c.grade === "WATCHLIST") gradeBadge = "badge-high";
+          else if (c.grade === "NEEDS_ESCALATION") gradeBadge = "badge-medium";
+
+          return `
+            <tr>
+              <td>
+                <strong>${escapeHtml(c.courier_name)}</strong>
+                <div class="text-muted" style="font-size:0.75rem;">Avg transit: ${c.avg_transit_hours}h · Score: ${c.sla_score}/100</div>
+              </td>
+              <td>${c.total_shipments}</td>
+              <td><strong>${c.delivery_pct}%</strong> (${c.delivered_count})</td>
+              <td style="color:${c.rto_pct >= 10 ? "#dc2626" : "inherit"};font-weight:600;">${c.rto_pct}% (${c.rto_count})</td>
+              <td>${c.stale_count}</td>
+              <td style="color:${c.overdue_cod_paise > 0 ? "#dc2626" : "inherit"};font-weight:600;">${escapeHtml(c.overdue_cod_display)}</td>
+              <td>
+                <span class="badge ${gradeBadge}">${escapeHtml(c.grade)}</span>
+                <div class="text-muted" style="font-size:0.75rem;margin-top:0.2rem;">${escapeHtml(c.recommendation)}</div>
+              </td>
+            </tr>
+          `;
+        })
+        .join("");
+    } catch (err) {
+      showToast(`Failed to load Founder Hub: ${err.message}`, "error");
+    }
+  }
+
+  function renderFounderCodLedger() {
+    if (!state.founderDashboard) return;
+    const filterVal = (document.getElementById("founder-cod-status-filter")?.value || "ALL").toUpperCase();
+    let rows = state.founderDashboard.cod_remittance_ledger || [];
+    if (filterVal !== "ALL") {
+      rows = rows.filter((r) => r.remittance_status === filterVal);
+    }
+
+    const tbody = document.getElementById("founder-cod-tbody");
+    if (!rows.length) {
+      tbody.innerHTML = `<tr><td colspan="10" class="text-center text-muted">No COD orders match status filter "${escapeHtml(filterVal)}".</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = rows
+      .slice(0, 60)
+      .map((r) => {
+        let badgeClass = "badge-neutral";
+        if (r.remittance_status === "OVERDUE_PAYOUT" || r.remittance_status === "HOLD_DISPUTED_DELIVERY") {
+          badgeClass = "badge-high";
+        } else if (r.remittance_status === "SHORT_REMITTED" || r.remittance_status === "AT_RISK_NDR") {
+          badgeClass = "badge-medium";
+        } else if (r.remittance_status === "SETTLED") {
+          badgeClass = "badge-ok";
+        }
+
+        return `
+          <tr data-order-id="${r.order_id}" class="clickable-row" title="Click to open Order Details & Provenance">
+            <td><strong>${escapeHtml(r.order_id_raw)}</strong></td>
+            <td>${escapeHtml(r.customer_name)} <span class="text-muted">(${escapeHtml(r.city)})</span></td>
+            <td>
+              <strong>${escapeHtml(r.courier_name)}</strong>
+              <div class="text-muted" style="font-family:monospace;font-size:0.75rem;">${escapeHtml(r.awb)}</div>
+            </td>
+            <td><strong>${escapeHtml(r.order_amount_display)}</strong></td>
+            <td>${escapeHtml(r.cod_fee_display)}</td>
+            <td>${escapeHtml(r.expected_net_display)}</td>
+            <td>${escapeHtml(r.remitted_display)}</td>
+            <td style="color:${r.discrepancy_paise > 0 ? "#dc2626" : "inherit"};font-weight:700;">
+              ${escapeHtml(r.discrepancy_display)}
+            </td>
+            <td><span class="badge ${badgeClass}">${escapeHtml(r.remittance_label)}</span></td>
+            <td>
+              <div style="font-size:0.78rem;">${escapeHtml(r.discrepancy_note)}</div>
+              <div class="text-muted" style="font-size:0.72rem;">Last event: ${escapeHtml(r.last_event_ist)}</div>
+            </td>
+          </tr>
+        `;
+      })
+      .join("");
+  }
+
+  function handleFounderPlaybookAction(actionKey) {
+    if (actionKey === "cod_overdue") {
+      const sel = document.getElementById("founder-cod-status-filter");
+      if (sel) {
+        sel.value = "OVERDUE_PAYOUT";
+        renderFounderCodLedger();
+      }
+      document.getElementById("founder-cod-section")?.scrollIntoView({ behavior: "smooth" });
+    } else if (actionKey === "orders_ndr") {
+      resetOrderFiltersUI();
+      document.getElementById("filter-payment").value = "COD";
+      document.getElementById("filter-shipment-status").value = "failed_attempt";
+      state.specialFilters.label = "Founder Playbook: Active COD Failed-Delivery (NDR) Orders";
+      updateActiveRuleBanner();
+      switchTab("orders");
+    } else if (actionKey === "sku_runway") {
+      document.getElementById("founder-sku-section")?.scrollIntoView({ behavior: "smooth" });
+    } else if (actionKey === "inspect_01004") {
+      const target = (state.founderDashboard?.cod_remittance_ledger || []).find(
+        (r) => r.order_id_norm === "01004" || r.order_id_norm === "01015"
+      );
+      if (target && target.order_id) {
+        openOrderDetails(target.order_id);
+      } else {
+        resetOrderFiltersUI();
+        document.getElementById("filter-search").value = "#01004";
+        switchTab("orders");
+      }
+    }
+  }
+
+  /* ========================================================================
+     PAGE 7: MCP Studio (Model Context Protocol Server & Playground)
+     ======================================================================== */
+  async function loadMcpStudio() {
+    try {
+      const catalog = await apiFetch("/api/mcp/catalog");
+      state.mcpCatalog = catalog;
+
+      const configPre = document.getElementById("mcp-client-config-pre");
+      if (configPre && catalog.client_configs) {
+        configPre.textContent = JSON.stringify(catalog.client_configs.antigravity_or_claude_stdio, null, 2);
+      }
+
+      // Render clickable catalog cards
+      const catList = document.getElementById("mcp-catalog-list");
+      const toolCards = (catalog.tools || []).map(
+        (t) => `
+          <div class="mcp-catalog-item" data-mcp-select-kind="tool" data-mcp-select-name="${escapeHtml(t.name)}">
+            <div class="mcp-catalog-item-header">
+              <span class="mcp-catalog-name">${escapeHtml(t.name)}</span>
+              <span class="badge badge-ok">Tool</span>
+            </div>
+            <div class="text-muted" style="font-size:0.78rem;">${escapeHtml(t.description)}</div>
+          </div>
+        `
+      );
+      const resourceCards = (catalog.resources || []).map(
+        (r) => `
+          <div class="mcp-catalog-item" data-mcp-select-kind="resource" data-mcp-select-name="${escapeHtml(r.uri)}">
+            <div class="mcp-catalog-item-header">
+              <span class="mcp-catalog-name">${escapeHtml(r.uri)}</span>
+              <span class="badge badge-low">Resource</span>
+            </div>
+            <div class="text-muted" style="font-size:0.78rem;">${escapeHtml(r.description)}</div>
+          </div>
+        `
+      );
+      const promptCards = (catalog.prompts || []).map(
+        (p) => `
+          <div class="mcp-catalog-item" data-mcp-select-kind="prompt" data-mcp-select-name="${escapeHtml(p.name)}">
+            <div class="mcp-catalog-item-header">
+              <span class="mcp-catalog-name">${escapeHtml(p.name)}</span>
+              <span class="badge badge-medium">Prompt</span>
+            </div>
+            <div class="text-muted" style="font-size:0.78rem;">${escapeHtml(p.description)}</div>
+          </div>
+        `
+      );
+      catList.innerHTML = [...toolCards, ...resourceCards, ...promptCards].join("");
+
+      const kindSel = document.getElementById("mcp-kind-select");
+      populateMcpTargetSelect(kindSel ? kindSel.value : "tool");
+      await executeMcpPlayground();
+    } catch (err) {
+      showToast(`Failed to load MCP Studio: ${err.message}`, "error");
+    }
+  }
+
+  function populateMcpTargetSelect(kind, preferredName = null) {
+    if (!state.mcpCatalog) return;
+    const targetSel = document.getElementById("mcp-target-select");
+    if (!targetSel) return;
+
+    let options = [];
+    if (kind === "tool") {
+      options = (state.mcpCatalog.tools || []).map((t) => ({
+        value: t.name,
+        label: `${t.name}`,
+      }));
+    } else if (kind === "resource") {
+      options = (state.mcpCatalog.resources || []).map((r) => ({
+        value: r.uri,
+        label: `${r.name} (${r.uri})`,
+      }));
+    } else if (kind === "prompt") {
+      options = (state.mcpCatalog.prompts || []).map((p) => ({
+        value: p.name,
+        label: `${p.name}`,
+      }));
+    }
+
+    targetSel.innerHTML = options
+      .map((o) => `<option value="${escapeHtml(o.value)}">${escapeHtml(o.label)}</option>`)
+      .join("");
+
+    if (preferredName && options.some((o) => o.value === preferredName)) {
+      targetSel.value = preferredName;
+    }
+    updateMcpTargetDetails();
+  }
+
+  function updateMcpTargetDetails() {
+    if (!state.mcpCatalog) return;
+    const kind = document.getElementById("mcp-kind-select")?.value || "tool";
+    const nameOrUri = document.getElementById("mcp-target-select")?.value || "";
+    const descEl = document.getElementById("mcp-selected-desc");
+    const argsEl = document.getElementById("mcp-args-textarea");
+
+    if (kind === "tool") {
+      const tool = (state.mcpCatalog.tools || []).find((t) => t.name === nameOrUri);
+      if (tool) {
+        descEl.innerHTML = `<strong>Tool <code>${escapeHtml(tool.name)}</code>:</strong> ${escapeHtml(tool.description)}`;
+        argsEl.value = JSON.stringify(tool.sampleArguments || {}, null, 2);
+      }
+    } else if (kind === "resource") {
+      const res = (state.mcpCatalog.resources || []).find((r) => r.uri === nameOrUri);
+      if (res) {
+        descEl.innerHTML = `<strong>Resource <code>${escapeHtml(res.uri)}</code>:</strong> ${escapeHtml(res.description)}`;
+        argsEl.value = "{}";
+      }
+    } else if (kind === "prompt") {
+      const pr = (state.mcpCatalog.prompts || []).find((p) => p.name === nameOrUri);
+      if (pr) {
+        descEl.innerHTML = `<strong>Prompt <code>${escapeHtml(pr.name)}</code>:</strong> ${escapeHtml(pr.description)}`;
+        argsEl.value = JSON.stringify(
+          pr.name === "courier_rto_negotiation_brief" ? { courier_name: "Xpressbees" } : {},
+          null,
+          2
+        );
+      }
+    }
+  }
+
+  async function executeMcpPlayground() {
+    const kind = document.getElementById("mcp-kind-select")?.value || "tool";
+    const nameOrUri = document.getElementById("mcp-target-select")?.value || "";
+    const rawArgs = document.getElementById("mcp-args-textarea")?.value || "{}";
+
+    let parsedArgs = {};
+    try {
+      parsedArgs = rawArgs.trim() ? JSON.parse(rawArgs) : {};
+    } catch (err) {
+      showToast(`Invalid JSON in MCP arguments: ${err.message}`, "error");
+      return;
+    }
+
+    try {
+      const data = await apiFetch("/api/mcp/execute", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          kind,
+          name_or_uri: nameOrUri,
+          arguments: parsedArgs,
+        }),
+      });
+      document.getElementById("mcp-req-pre").textContent = JSON.stringify(data.jsonrpc_request, null, 2);
+      document.getElementById("mcp-resp-pre").textContent = JSON.stringify(data.jsonrpc_response, null, 2);
+    } catch (err) {
+      showToast(`MCP execution failed: ${err.message}`, "error");
+    }
   }
 
   document.addEventListener("DOMContentLoaded", () => {

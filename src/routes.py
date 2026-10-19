@@ -29,6 +29,7 @@ from src.demo_data import (
     generate_demo_csv_bundles,
     load_demo_dataset,
 )
+from src.founder_insights import build_founder_dashboard, export_cod_ledger_csv
 from src.importer import (
     delete_import_batch,
     get_existing_fingerprints,
@@ -36,6 +37,13 @@ from src.importer import (
     reset_workspace_data,
 )
 from src.matching import apply_manual_match_decision, reconcile_workspace
+from src.mcp_server import (
+    call_mcp_tool_by_name,
+    get_mcp_catalog,
+    get_mcp_prompt_by_name,
+    handle_mcp_jsonrpc,
+    read_mcp_resource_by_uri,
+)
 from src.models import ImportBatch
 from src.queries import (
     execute_nl_query,
@@ -486,3 +494,111 @@ def api_update_settings(
         "reference_time_mode": s.reference_time_mode,
         "flags_summary": flags_summary,
     }
+
+
+# ==========================================================================
+# Founder Intelligence, COD Remittance & Unit Economics Endpoints
+# ==========================================================================
+
+
+@router.get("/founder/dashboard")
+def api_get_founder_dashboard(
+    db: Session = Depends(get_db),
+    auth: AuthContext = Depends(resolve_auth_context),
+) -> dict[str, Any]:
+    return build_founder_dashboard(db, workspace_id=auth.workspace_id)
+
+
+@router.get("/founder/cod-export.csv")
+def api_export_cod_ledger(
+    status_filter: str = Query(default="ALL"),
+    db: Session = Depends(get_db),
+    auth: AuthContext = Depends(resolve_auth_context),
+) -> Response:
+    csv_text = export_cod_ledger_csv(
+        db,
+        workspace_id=auth.workspace_id,
+        status_filter=status_filter,
+    )
+    return Response(
+        content=csv_text.encode("utf-8"),
+        media_type="text/csv; charset=utf-8",
+        headers={"Content-Disposition": 'attachment; filename="cod_remittance_audit_ledger.csv"'},
+    )
+
+
+# ==========================================================================
+# Model Context Protocol (MCP) Server & Studio Playground Endpoints
+# ==========================================================================
+
+
+class McpPlaygroundRequest(BaseModel):
+    kind: str = Field(default="tool", description="One of: tool, resource, prompt")
+    name_or_uri: str
+    arguments: dict[str, Any] = Field(default_factory=dict)
+
+
+@router.get("/mcp/catalog")
+def api_get_mcp_catalog() -> dict[str, Any]:
+    return get_mcp_catalog()
+
+
+@router.post("/mcp")
+def api_post_mcp_jsonrpc(
+    payload: dict[str, Any],
+    db: Session = Depends(get_db),
+    auth: AuthContext = Depends(resolve_auth_context),
+) -> Response:
+    resp = handle_mcp_jsonrpc(db, payload=payload, workspace_id=auth.workspace_id)
+    if resp is None:
+        return Response(status_code=status.HTTP_202_ACCEPTED)
+    return Response(
+        content=json.dumps(resp),
+        media_type="application/json",
+    )
+
+
+@router.post("/mcp/execute")
+def api_execute_mcp_playground(
+    req: McpPlaygroundRequest,
+    db: Session = Depends(get_db),
+    auth: AuthContext = Depends(resolve_auth_context),
+) -> dict[str, Any]:
+    """Execute an MCP tool, resource read, or prompt from the web UI MCP Studio and return JSON-RPC envelopes."""
+    kind = (req.kind or "tool").strip().lower()
+    if kind == "tool":
+        rpc_req = {
+            "jsonrpc": "2.0",
+            "id": "studio-1",
+            "method": "tools/call",
+            "params": {
+                "name": req.name_or_uri,
+                "arguments": req.arguments or {},
+            },
+        }
+    elif kind == "resource":
+        rpc_req = {
+            "jsonrpc": "2.0",
+            "id": "studio-1",
+            "method": "resources/read",
+            "params": {"uri": req.name_or_uri},
+        }
+    elif kind == "prompt":
+        rpc_req = {
+            "jsonrpc": "2.0",
+            "id": "studio-1",
+            "method": "prompts/get",
+            "params": {
+                "name": req.name_or_uri,
+                "arguments": req.arguments or {},
+            },
+        }
+    else:
+        raise HTTPException(status_code=400, detail=f"Unsupported MCP playground kind '{req.kind}'.")
+
+    rpc_resp = handle_mcp_jsonrpc(db, payload=rpc_req, workspace_id=auth.workspace_id)
+    return {
+        "jsonrpc_request": rpc_req,
+        "jsonrpc_response": rpc_resp,
+    }
+

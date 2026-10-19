@@ -13,15 +13,16 @@
       <div class="brand-mark" aria-hidden="true">OO</div>
       <div>
         <div class="brand-title-row">
-          <h1 class="brand-title">Order Ops Console</h1>
+          <h1 class="brand-title">Order Ops &amp; Founder Console</h1>
           <span id="mode-badge" class="badge badge-neutral">Loading mode…</span>
+          <span class="badge badge-ok" title="Model Context Protocol JSON-RPC 2.0 Server Active (stdio + HTTP /api/mcp)">MCP Ready</span>
         </div>
-        <p class="brand-subtitle">Shopify Orders · Courier Tracking · WhatsApp Complaint Reconciliation (IST)</p>
+        <p class="brand-subtitle">Shopify Orders · Courier AWB · WhatsApp Complaints · COD Remittance &amp; Unit Economics (IST)</p>
       </div>
     </div>
 
     <div class="header-actions">
-      <div class="ref-time-box" title="Reference timestamp used to evaluate stale tracking and dispatch delays">
+      <div class="ref-time-box" title="Reference timestamp used to evaluate stale tracking, COD remittance SLA, and dispatch delays">
         <span class="ref-time-label">Reference Time (IST):</span>
         <strong id="header-ref-time">—</strong>
       </div>
@@ -36,7 +37,7 @@
     <div class="demo-banner-content">
       <span class="demo-pill">SYNTHETIC DEMO DATA</span>
       <span>
-        You are viewing reproducible fictional Indian D2C data (240 unique orders, 6 couriers, WhatsApp complaint logs) anchored to
+        You are viewing reproducible fictional Indian D2C data (240 unique orders, 6 couriers, WhatsApp complaint logs, COD remittance ledger) anchored to
         <strong id="banner-ref-time">19 Oct 2026, 06:00 PM IST</strong>. No real customer records are present.
       </span>
     </div>
@@ -54,7 +55,7 @@
   <section id="walkthrough-panel" class="walkthrough-panel hidden" aria-label="Demo Walkthrough">
     <div class="walkthrough-header">
       <div>
-        <h2>2-Minute Operations Walkthrough</h2>
+        <h2>2-Minute Operations &amp; Founder Walkthrough</h2>
         <p>Click any step below to jump directly to that showcase scenario in the console:</p>
       </div>
       <button id="btn-close-walkthrough" type="button" class="btn btn-sm btn-ghost">Close</button>
@@ -116,6 +117,14 @@
     </button>
     <button type="button" class="nav-tab" data-tab="ask">
       <span>5. Ask Your Orders</span>
+    </button>
+    <button type="button" class="nav-tab" data-tab="founder">
+      <span>6. Founder &amp; Cashflow Hub</span>
+      <span id="nav-badge-founder" class="nav-count nav-count-warn">CFO</span>
+    </button>
+    <button type="button" class="nav-tab" data-tab="mcp">
+      <span>7. MCP Studio</span>
+      <span class="nav-count nav-count-mcp">8 Tools</span>
     </button>
   </nav>
 
@@ -799,6 +808,280 @@
       </div>
 
       <div id="ask-response-container" class="hidden"></div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- PAGE 6: FOUNDER & CASHFLOW HUB                                     -->
+    <!-- ================================================================== -->
+    <section id="tab-founder" class="tab-panel">
+      <div class="section-header">
+        <div>
+          <h2>Founder &amp; Cashflow Command Center</h2>
+          <p class="section-subtitle">
+            Real-time COD remittance reconciliation, Gross-to-Net contribution margin waterfall, SKU stockout runway, and Courier SLA scorecards computed directly from reconciled workspace records.
+          </p>
+        </div>
+        <div class="section-actions">
+          <button id="btn-refresh-founder" type="button" class="btn btn-secondary">
+            ↻ Refresh Financials
+          </button>
+          <a id="btn-export-cod-csv" href="/api/founder/cod-export.csv?status_filter=ALL" class="btn btn-primary" download>
+            ⬇ Export COD Remittance Ledger (.csv)
+          </a>
+        </div>
+      </div>
+
+      <!-- Executive P&L & Cashflow Waterfall Grid -->
+      <div id="founder-kpi-grid" class="summary-grid">
+        <div class="summary-card">
+          <span class="card-label">Active GMV (Ex-Cancelled)</span>
+          <strong id="fkpi-active-gmv" class="card-value">₹0</strong>
+          <span id="fkpi-gross-sub" class="card-meta">Gross GMV: ₹0</span>
+        </div>
+        <div class="summary-card card-priority">
+          <span class="card-label">Net Contribution Margin</span>
+          <strong id="fkpi-net-margin" class="card-value">₹0</strong>
+          <span id="fkpi-net-margin-pct" class="card-meta">After COGS, Freight, COD Fees &amp; RTO</span>
+        </div>
+        <div class="summary-card">
+          <span class="card-label">Bank-Realized Cash (Prepaid + Settled COD)</span>
+          <strong id="fkpi-bank-cash" class="card-value">₹0</strong>
+          <span id="fkpi-bank-sub" class="card-meta">Settled to bank account</span>
+        </div>
+        <div class="summary-card card-danger">
+          <span class="card-label">Overdue COD Remittances (SLA Breached)</span>
+          <strong id="fkpi-cod-overdue" class="card-value">₹0</strong>
+          <span id="fkpi-cod-overdue-sub" class="card-meta">Delivered &gt; T+4d without UTR payout</span>
+        </div>
+        <div class="summary-card card-warn">
+          <span class="card-label">Short-Remitted Weight Disputes</span>
+          <strong id="fkpi-cod-disputed" class="card-value">₹0</strong>
+          <span id="fkpi-cod-disputed-sub" class="card-meta">Excess courier volumetric slab deductions</span>
+        </div>
+        <div class="summary-card card-danger">
+          <span class="card-label">RTO Margin Bleed (2-Way Freight + Ops)</span>
+          <strong id="fkpi-rto-bleed" class="card-value">₹0</strong>
+          <span id="fkpi-rto-sub" class="card-meta">Unrecovered forward + return shipping</span>
+        </div>
+      </div>
+
+      <!-- Top 4 Founder Priority Action Playbooks -->
+      <div class="card-panel">
+        <div class="panel-header">
+          <div>
+            <h3>Founder Morning Brief — Top Priority Fires</h3>
+            <p class="text-muted">Ranked by immediate INR cashflow and brand trust impact. Click any action to drill down.</p>
+          </div>
+        </div>
+        <div id="founder-playbooks-grid" class="founder-playbooks-grid"></div>
+      </div>
+
+      <!-- Unit Economics Waterfall Bar -->
+      <div class="card-panel">
+        <div class="panel-header">
+          <div>
+            <h3>Gross-to-Net Unit Economics Waterfall (Integer Paise Accuracy)</h3>
+            <p class="text-muted">How ₹100 of Gross Order Value translates into Net Contribution after RTO, COGS, and Courier charges.</p>
+          </div>
+        </div>
+        <div id="founder-waterfall-bar" class="waterfall-grid"></div>
+      </div>
+
+      <!-- COD Remittance & Discrepancy Audit Ledger -->
+      <div class="card-panel" id="founder-cod-section">
+        <div class="panel-header">
+          <div>
+            <h3>COD Remittance &amp; Courier Settlement Audit Ledger</h3>
+            <p class="text-muted">Tracks every Cash-on-Delivery order from courier collection to bank UTR settlement. Click any order to inspect full provenance.</p>
+          </div>
+          <div class="section-actions">
+            <select id="founder-cod-status-filter" aria-label="Filter COD Ledger by Status">
+              <option value="ALL">All COD Orders</option>
+              <option value="OVERDUE_PAYOUT">Overdue Payouts Only (SLA Breached)</option>
+              <option value="HOLD_DISPUTED_DELIVERY">Disputed Delivery (Customer DNR)</option>
+              <option value="SHORT_REMITTED">Short Remitted (Weight Dispute)</option>
+              <option value="AT_RISK_NDR">At Risk in Field (Failed Attempt NDR)</option>
+              <option value="LOST_TO_RTO">Lost to RTO</option>
+              <option value="SETTLED">Settled with Bank UTR</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Order #</th>
+                <th>Customer &amp; City</th>
+                <th>Courier &amp; AWB</th>
+                <th>Order Value</th>
+                <th>COD Fee</th>
+                <th>Expected Net</th>
+                <th>Remitted</th>
+                <th>Unsettled / Discrepancy</th>
+                <th>Remittance Status</th>
+                <th>UTR / Audit Explanation</th>
+              </tr>
+            </thead>
+            <tbody id="founder-cod-tbody">
+              <tr>
+                <td colspan="10" class="text-center text-muted">Loading COD remittance ledger…</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Two-Column: SKU Stockout Runway + Courier SLA Scorecard -->
+      <div class="founder-two-col">
+        <div class="card-panel" id="founder-sku-section">
+          <div class="panel-header">
+            <div>
+              <h3>SKU Velocity, RTO % &amp; Stockout Runway</h3>
+              <p class="text-muted">Compares remaining warehouse days-of-cover against supplier manufacturing lead times.</p>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>SKU &amp; Product</th>
+                  <th>Ordered / Deliv / RTO</th>
+                  <th>Velocity</th>
+                  <th>Stock</th>
+                  <th>Runway vs Lead Time</th>
+                  <th>Suggested PO</th>
+                </tr>
+              </thead>
+              <tbody id="founder-sku-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card-panel" id="founder-courier-section">
+          <div class="panel-header">
+            <div>
+              <h3>Courier SLA, NDR &amp; RTO Scorecard</h3>
+              <p class="text-muted">Carrier-by-carrier delivery performance, overdue COD cash, and lane allocation guidance.</p>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Courier</th>
+                  <th>Shipments</th>
+                  <th>Deliv %</th>
+                  <th>RTO %</th>
+                  <th>Stale ≥72h</th>
+                  <th>Overdue COD</th>
+                  <th>SLA Grade &amp; Advice</th>
+                </tr>
+              </thead>
+              <tbody id="founder-courier-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- PAGE 7: MCP STUDIO (AI AGENT & MODEL CONTEXT PROTOCOL PLAYGROUND)  -->
+    <!-- ================================================================== -->
+    <section id="tab-mcp" class="tab-panel">
+      <div class="section-header">
+        <div>
+          <h2>MCP Studio — Model Context Protocol Server &amp; Tool Playground</h2>
+          <p class="section-subtitle">
+            Connect Claude Desktop, Cursor, Antigravity, or custom AI agents directly to your D2C operations &amp; financial engine via JSON-RPC 2.0 (`stdio` and `POST /api/mcp`).
+          </p>
+        </div>
+        <div class="section-actions">
+          <span class="badge badge-ok">Protocol: 2024-11-05 · JSON-RPC 2.0</span>
+        </div>
+      </div>
+
+      <div class="mcp-studio-layout">
+        <!-- Left: Interactive Tool / Resource / Prompt Playground -->
+        <div class="card-panel">
+          <div class="panel-header">
+            <div>
+              <h3>Interactive MCP Tool &amp; Resource Runner</h3>
+              <p class="text-muted">Select any MCP capability below, customize JSON arguments, and execute a live JSON-RPC 2.0 call against the workspace.</p>
+            </div>
+          </div>
+
+          <div class="mcp-controls-grid">
+            <div class="form-group">
+              <label for="mcp-kind-select">MCP Capability Type</label>
+              <select id="mcp-kind-select">
+                <option value="tool">MCP Tools (tools/call — 8 Tools)</option>
+                <option value="resource">MCP Resources (resources/read — 4 URIs)</option>
+                <option value="prompt">MCP Prompts (prompts/get — 3 Templates)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="mcp-target-select">Select Tool / Resource / Prompt</label>
+              <select id="mcp-target-select"></select>
+            </div>
+          </div>
+
+          <div id="mcp-selected-desc" class="info-callout" style="margin-top:0.75rem;"></div>
+
+          <div class="form-group" style="margin-top:0.75rem;">
+            <label for="mcp-args-textarea">JSON Arguments (`params.arguments`)</label>
+            <textarea id="mcp-args-textarea" rows="4" class="code-textarea" spellcheck="false">{}</textarea>
+          </div>
+
+          <div class="form-actions-inline" style="margin-top:0.75rem;">
+            <button id="btn-run-mcp" type="button" class="btn btn-primary">
+              ▶ Execute Live MCP Call (JSON-RPC 2.0)
+            </button>
+            <button id="btn-reset-mcp-args" type="button" class="btn btn-sm btn-secondary">
+              Reset Sample Arguments
+            </button>
+          </div>
+
+          <div class="mcp-envelopes-split">
+            <div>
+              <h4>JSON-RPC 2.0 Request Envelope</h4>
+              <pre id="mcp-req-pre" class="code-pre">Click "Execute Live MCP Call" to inspect request…</pre>
+            </div>
+            <div>
+              <h4>JSON-RPC 2.0 Response Envelope (`structuredContent`)</h4>
+              <pre id="mcp-resp-pre" class="code-pre">Waiting for execution…</pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Client Connection Config & Catalog Reference -->
+        <div class="mcp-sidebar-stack">
+          <div class="card-panel">
+            <div class="panel-header">
+              <div>
+                <h3>Connect Your AI Client (Stdio &amp; HTTP)</h3>
+                <p class="text-muted">Paste this into your Antigravity, Claude Desktop, or Cursor `mcp_config.json`:</p>
+              </div>
+              <button id="btn-copy-mcp-config" type="button" class="btn btn-sm btn-secondary">
+                Copy JSON
+              </button>
+            </div>
+            <pre id="mcp-client-config-pre" class="code-pre"></pre>
+            <p class="text-muted" style="margin-top:0.5rem;font-size:0.8rem;">
+              <strong>HTTP JSON-RPC 2.0 Endpoint:</strong> <code>POST http://127.0.0.1:8000/api/mcp</code>
+            </p>
+          </div>
+
+          <div class="card-panel">
+            <div class="panel-header">
+              <div>
+                <h3>Registered MCP Capabilities Catalog</h3>
+              </div>
+            </div>
+            <div id="mcp-catalog-list" class="mcp-catalog-list"></div>
+          </div>
+        </div>
+      </div>
     </section>
 
   </main>

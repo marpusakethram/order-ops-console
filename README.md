@@ -303,3 +303,40 @@ This repository includes a zero-build FastAPI configuration (`main.py` and `verc
 - **Phone Number Masking:** Customer phone numbers are masked (`+91 •••••• 2334`) across all tables and CSV exports.
 - **CSV Formula Injection Protection:** All exported CSV cells starting with `=`, `+`, `-`, `@`, tab, or carriage return are prefixed with `'` so Microsoft Excel and Google Sheets cannot execute injected formulas.
 - **Untrusted Input Isolation:** Customer complaint text is HTML-escaped in the UI and is never passed to an LLM or SQL interpreter.
+
+---
+
+## 14. Founder & Cashflow Command Center (`6. Founder & Cashflow Hub`)
+
+Built specifically for Indian D2C founders and finance/ops leads, the **Founder & Cashflow Hub** (`GET /api/founder/dashboard`) computes real-time unit economics and COD cashflow health directly from reconciled workspace records using integer **paise** accounting:
+
+1. **Gross-to-Net Contribution Margin Waterfall:**
+   - Tracks **Gross GMV** → **Cancelled** → **Active GMV** → **RTO Uncollected Value** → **Realized Revenue** → **Product COGS** → **Forward & Return Courier Freight + COD Fees + Packaging** → **Net Contribution Margin (INR & %)**.
+2. **COD Remittance & Discrepancy Audit Ledger (`GET /api/founder/cod-export.csv`):**
+   - Tracks every Cash-on-Delivery order across `OVERDUE_PAYOUT` (delivered past courier `T+4` settlement SLA without UTR payout), `HOLD_DISPUTED_DELIVERY` (courier marked Delivered & collected cash, but customer raised a non-receipt complaint), `SHORT_REMITTED` (excess volumetric weight slab deductions), `AT_RISK_NDR` (active failed delivery attempts), `LOST_TO_RTO`, and `SETTLED`.
+3. **SKU Velocity, RTO % & Stockout Runway:**
+   - Compares remaining warehouse inventory cover (in days) against supplier manufacturing lead times (`CRITICAL_STOCKOUT_RISK`, `REORDER_NOW`, `HEALTHY`, `OVERSTOCKED_CAPITAL`) and recommends purchase order quantities.
+4. **Courier SLA, NDR & RTO Scorecard:**
+   - Benchmarks **BlueDart, Delhivery, Ecom Express, Xpressbees, Shadowfax, and DTDC** on Delivery %, RTO %, Stale Shipments (`≥ 72h`), Average Transit Hours, Overdue COD Cash, and lane allocation advice.
+
+---
+
+## 15. Model Context Protocol (MCP) Server & Studio (`7. MCP Studio`)
+
+Order Ops Console is **MCP-ready** out of the box (`protocolVersion: 2024-11-05`, JSON-RPC 2.0), allowing AI clients (**Antigravity**, **Claude Desktop**, **Cursor**, or custom agents) to query live order operations and founder financials safely:
+
+- **Stdio Transport (`mcp_stdio.py`):**
+  ```json
+  {
+    "mcpServers": {
+      "order-ops-console": {
+        "command": "python",
+        "args": ["D:/Order Ops Console/mcp_stdio.py"],
+        "cwd": "D:/Order Ops Console"
+      }
+    }
+  }
+  ```
+- **HTTP JSON-RPC 2.0 Transport:** `POST http://127.0.0.1:8000/api/mcp`
+- **Interactive Web Playground (`7. MCP Studio`):** Browse and execute all **8 MCP Tools** (`get_founder_daily_brief`, `audit_cod_remittances`, `analyze_unit_economics`, `check_sku_inventory_runway`, `compare_courier_performance`, `search_flagged_orders`, `inspect_order_provenance`, `run_natural_language_ops_query`), **4 MCP Resources**, and **3 MCP Prompts** directly in the browser while inspecting raw JSON-RPC 2.0 request and response envelopes.
+

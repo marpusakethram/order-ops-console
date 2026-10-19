@@ -1166,3 +1166,244 @@ button:focus-visible {
     flex-direction: column;
   }
 }
+
+/* ==========================================================================
+   Founder & Cashflow Command Center + MCP Studio
+   ========================================================================== */
+.nav-count-mcp {
+  background: #0d9488;
+  color: #ffffff;
+}
+
+.founder-playbooks-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.9rem;
+}
+
+.playbook-card {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-strong);
+  border-left: 4px solid var(--primary);
+  border-radius: var(--radius-sm);
+  padding: 0.95rem 1.05rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.65rem;
+}
+
+.playbook-card.playbook-p0 {
+  border-left-color: #dc2626;
+  background: #fef2f2;
+}
+
+.playbook-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.playbook-priority {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #991b1b;
+  background: #fee2e2;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+}
+
+.playbook-impact {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.playbook-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0.25rem 0;
+}
+
+.playbook-detail {
+  font-size: 0.83rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.waterfall-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.65rem;
+}
+
+.waterfall-step {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.waterfall-step.wf-positive {
+  border-top: 3px solid #0284c7;
+}
+
+.waterfall-step.wf-deduct {
+  border-top: 3px solid #ef4444;
+}
+
+.waterfall-step.wf-net {
+  border-top: 3px solid #059669;
+  background: #ecfdf5;
+}
+
+.waterfall-label {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.waterfall-val {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.waterfall-sub {
+  font-size: 0.73rem;
+  color: var(--text-muted);
+}
+
+.founder-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.15rem;
+}
+
+.founder-two-col > *,
+.mcp-studio-layout > *,
+.mcp-envelopes-split > *,
+.mcp-sidebar-stack > * {
+  min-width: 0;
+}
+
+.mcp-studio-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: 1.15rem;
+  align-items: start;
+}
+
+.mcp-sidebar-stack {
+  display: grid;
+  gap: 1.15rem;
+}
+
+.mcp-controls-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem;
+}
+
+.code-textarea {
+  width: 100%;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.82rem;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+.mcp-envelopes-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+
+.mcp-envelopes-split h4 {
+  font-size: 0.8rem;
+  margin-bottom: 0.4rem;
+  color: var(--text-secondary);
+}
+
+.code-pre {
+  background: #0f172a;
+  color: #e2e8f0;
+  padding: 0.75rem 0.9rem;
+  border-radius: var(--radius-sm);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.76rem;
+  line-height: 1.45;
+  overflow-x: auto;
+  max-height: 360px;
+  overflow-y: auto;
+  margin: 0;
+}
+
+.mcp-catalog-list {
+  display: grid;
+  gap: 0.6rem;
+  max-height: 440px;
+  overflow-y: auto;
+}
+
+.mcp-catalog-item {
+  padding: 0.65rem 0.8rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--bg-subtle);
+  cursor: pointer;
+  transition: border-color 0.12s, background-color 0.12s;
+}
+
+.mcp-catalog-item:hover {
+  border-color: var(--primary);
+  background: #f0f9ff;
+}
+
+.mcp-catalog-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.2rem;
+}
+
+.mcp-catalog-name {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+@media (max-width: 1024px) {
+  .founder-playbooks-grid,
+  .founder-two-col,
+  .mcp-studio-layout,
+  .mcp-envelopes-split,
+  .mcp-controls-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .waterfall-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .waterfall-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

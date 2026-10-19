@@ -515,3 +515,117 @@ def test_access_control_and_workspace_isolation(client: TestClient, monkeypatch)
     # User B is completely isolated and sees 0 orders!
     orders_b = client.get("/api/orders", headers={"Authorization": f"Bearer {token_b}"}).json()
     assert orders_b["total"] == 0
+
+
+def test_founder_dashboard_cod_remittance_and_sku_runway(client: TestClient):
+    client.post("/api/demo/load")
+
+    resp = client.get("/api/founder/dashboard")
+    assert resp.status_code == 200
+    data = resp.json()
+
+    ue = data["unit_economics"]
+    assert ue["active_gmv_paise"] > 0
+    assert ue["net_contribution_paise"] > 0
+    assert ue["overdue_cod_count"] > 0
+    assert ue["disputed_cod_count"] > 0
+    assert ue["rto_margin_bleed_paise"] > 0
+
+    # COD Remittance Ledger
+    ledger = data["cod_remittance_ledger"]
+    assert len(ledger) > 20
+    statuses = {r["remittance_status"] for r in ledger}
+    assert "OVERDUE_PAYOUT" in statuses
+    assert "SHORT_REMITTED" in statuses
+    assert "SETTLED" in statuses
+
+    # SKU Inventory Runway
+    skus = data["sku_inventory_runway"]
+    assert len(skus) == 8
+    assert any(s["stock_status"] == "CRITICAL_STOCKOUT_RISK" for s in skus)
+
+    # Courier SLA Scorecard
+    couriers = data["courier_scorecard"]
+    assert len(couriers) >= 5
+    assert all("sla_score" in c and "recommendation" in c for c in couriers)
+
+    # COD Export CSV
+    csv_resp = client.get("/api/founder/cod-export.csv?status_filter=OVERDUE_PAYOUT")
+    assert csv_resp.status_code == 200
+    assert "Expected Net Payout (INR)" in csv_resp.text
+
+
+def test_mcp_jsonrpc_server_and_studio_playground(client: TestClient):
+    client.post("/api/demo/load")
+
+    # 1. MCP Catalog endpoint
+    cat = client.get("/api/mcp/catalog").json()
+    assert cat["protocol_version"] == "2024-11-05"
+    assert len(cat["tools"]) == 8
+    assert len(cat["resources"]) == 4
+    assert len(cat["prompts"]) == 3
+
+    # 2. JSON-RPC 2.0 initialize
+    init_resp = client.post(
+        "/api/mcp",
+        json={"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}},
+    ).json()
+    assert init_resp["result"]["protocolVersion"] == "2024-11-05"
+    assert init_resp["result"]["serverInfo"]["name"] == "order-ops-founder-mcp"
+
+    # 3. JSON-RPC 2.0 tools/list
+    tools_resp = client.post(
+        "/api/mcp",
+        json={"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}},
+    ).json()
+    tool_names = {t["name"] for t in tools_resp["result"]["tools"]}
+    assert "get_founder_daily_brief" in tool_names
+    assert "audit_cod_remittances" in tool_names
+    assert "inspect_order_provenance" in tool_names
+
+    # 4. JSON-RPC 2.0 tools/call -> audit_cod_remittances
+    call_resp = client.post(
+        "/api/mcp",
+        json={
+            "jsonrpc": "2.0",
+            "id": 3,
+            "method": "tools/call",
+            "params": {
+                "name": "audit_cod_remittances",
+                "arguments": {"status_filter": "OVERDUE_PAYOUT", "limit": 5},
+            },
+        },
+    ).json()
+    assert call_resp["result"]["isError"] is False
+    structured = call_resp["result"]["structuredContent"]
+    assert structured["total_matching_cod_orders"] > 0
+    assert len(structured["rows"]) <= 5
+
+    # 5. JSON-RPC 2.0 tools/call -> inspect_order_provenance (#01004)
+    prov_resp = client.post(
+        "/api/mcp",
+        json={
+            "jsonrpc": "2.0",
+            "id": 4,
+            "method": "tools/call",
+            "params": {
+                "name": "inspect_order_provenance",
+                "arguments": {"order_id": "#01004"},
+            },
+        },
+    ).json()
+    assert prov_resp["result"]["isError"] is False
+    assert prov_resp["result"]["structuredContent"]["order"]["order_number"] == "#01004"
+
+    # 6. MCP Studio Playground endpoint (/api/mcp/execute)
+    studio_resp = client.post(
+        "/api/mcp/execute",
+        json={
+            "kind": "resource",
+            "name_or_uri": "orderops://founder/daily-brief",
+            "arguments": {},
+        },
+    ).json()
+    assert studio_resp["jsonrpc_request"]["method"] == "resources/read"
+    assert "contents" in studio_resp["jsonrpc_response"]["result"]
+
