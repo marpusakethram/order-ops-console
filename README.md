@@ -2,6 +2,8 @@
 
 An operations console built for small Indian direct-to-consumer (D2C) brands to reconcile **Shopify order exports**, **courier tracking spreadsheets**, and **exported WhatsApp customer complaint logs** into a single, explainable view.
 
+![Order Ops Console architecture](docs/assets/architecture.png)
+
 ---
 
 ## 1. What the Application Does
