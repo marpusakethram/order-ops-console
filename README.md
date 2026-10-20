@@ -6,6 +6,29 @@ An operations console built for small Indian direct-to-consumer (D2C) brands to 
 
 ---
 
+## Try the demo in five minutes
+
+Requires Python 3.11 or newer. Run these commands from a terminal:
+
+```bash
+git clone https://github.com/marpusakethram/order-ops-console.git
+cd order-ops-console
+python -m venv .venv
+```
+
+Activate the environment with `.venv\Scripts\Activate.ps1` in Windows PowerShell, or `source .venv/bin/activate` on macOS/Linux. Then:
+
+```bash
+python -m pip install -r requirements.txt
+python -m uvicorn main:app --host 127.0.0.1 --port 8000
+```
+
+Open **http://127.0.0.1:8000** and select **Load Demo Data**. The local demo uses synthetic orders and needs no Gemini key, Shopify account or Supabase project. Try an order flag, the match-review queue and an example question.
+
+**What is connected?** These are CSV imports, not live Shopify, courier or WhatsApp integrations. Real business data requires a properly secured deployment. Authentication and workspace isolation need review for your own use case; demo defaults are for local synthetic data.
+
+**Contribute:** [CONTRIBUTING.md](CONTRIBUTING.md) lists setup and useful starting points. Report security concerns privately as described in [SECURITY.md](SECURITY.md).
+
 ## 1. What the Application Does
 
 Operations teams at small Indian D2C brands typically track daily orders across three disconnected spreadsheets:
@@ -89,7 +112,7 @@ No API keys, paid services, or database setup are required for Demo Mode.
 
 ### Step 1: Open PowerShell in the project folder
 ```powershell
-cd "D:\Order Ops Console"
+cd order-ops-console
 ```
 
 ### Step 2: Install dependencies

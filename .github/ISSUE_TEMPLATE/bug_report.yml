@@ -1,0 +1,26 @@
+name: Bug report
+description: Report a reproducible problem using public or synthetic input.
+title: "[Bug]: "
+body:
+  - type: markdown
+    attributes:
+      value: Do not include credentials or private data. Report security issues privately.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Include expected and actual behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Include the commit, browser/runtime, and a minimal synthetic example.
+    validations:
+      required: true
+  - type: textarea
+    id: checks
+    attributes:
+      label: Checks and screenshots
+      description: Redact private information before attaching anything.
